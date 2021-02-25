@@ -13,5 +13,16 @@ namespace RestaurantApp.Entities
         public float Valor { get; set; }
         public bool ComandaPaga { get; set; }
         public int QuantidadePessoasNaMesa { get; set; }
+
+        public Comanda(int comandaId, int mesaId, float valor, bool comandaPaga, int quantidadePessoasNaMesa)
+        {
+            ComandaId = comandaId;
+            MesaId = mesaId;
+            DataHoraEntrada = DateTime.Now;
+            DataHoraSaida = DateTime.Now;
+            Valor = valor;
+            ComandaPaga = comandaPaga;
+            QuantidadePessoasNaMesa = quantidadePessoasNaMesa;
+        }
     }
 }

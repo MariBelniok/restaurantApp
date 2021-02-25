@@ -13,13 +13,44 @@ namespace RestaurantApp
     {
         static void Main(string[] args)
         {
-            List<Produto> produtos = Dados.DadosLocais.LerProdutos();
+            Console.WriteLine("Favor informar o numero da comanda: ");
+            int numeroComanda = int.Parse(Console.ReadLine());
 
-            foreach(Produto p in produtos)
+            Console.WriteLine("Favor informar o numero da mesa: ");
+            int numeroMesa = int.Parse(Console.ReadLine());
+
+
+            //MOSTRAR MENU
+            Console.WriteLine("------------------------------------------");
+            Console.WriteLine("MENU: ");
+            List<ProdutoModel> produtos = ProdutoService.ListarProdutos();
+
+            foreach (ProdutoModel p in produtos)
             {
-                Console.WriteLine(p.NomeProduto);
-                Console.WriteLine(p.ValorProduto);
+                Console.WriteLine($"{p.ProdutoId} - {p.NomeProduto} - R${p.ValorProduto:F2}");
+            }
+            Console.WriteLine("------------------------------------------");
+
+            //PEDIDO CLIENTE
+            Console.WriteLine("Favor realizar seu pedido. Máximo de 2 pedidos por cliente.");
+            Console.WriteLine("Quantos items do menu deseja pedir? ");
+            int numeroItems = int.Parse(Console.ReadLine());
+
+            List<string> produtoPedido = new List<string>();
+            for (int i = 1; i <= numeroItems; i++)
+            {
+                Console.WriteLine("Favor informar o número do item desejado: ");
+                int produtoId = int.Parse(Console.ReadLine());
+
+                //produtoPedido = PedidoService.AddProdutoMenu();
+            }
+
+            //MOSTRAR PEDIDO
+            Console.WriteLine("PEDIDO: ");
+            foreach(string obj in produtoPedido)
+            {
+                Console.WriteLine(obj);
             }
         }
-    }   
+    }
 }
