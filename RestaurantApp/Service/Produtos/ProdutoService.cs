@@ -10,6 +10,29 @@ namespace RestaurantApp.Service
 {
     class ProdutoService
     {
+
+        public static List<ProdutoModel> BuscarProdutos()
+        {
+            var listaProdutosDisponiveis = new List<ProdutoModel>();
+
+            Dados.DadosLocais.LerProdutos().ForEach(x =>
+            {
+                var prod = new ProdutoModel()
+                {
+                    ProdutoId = x.ProdutoId,
+                    NomeProduto = x.NomeProduto,
+                    ValorProduto = x.ValorProduto,
+                };
+
+                listaProdutosDisponiveis.Add(prod);
+            });
+
+            return listaProdutosDisponiveis;
+        }
+    }
+}
+
+/*
         //RETORNA APENAS PRODUTOS DISPONIVEIS
         /*public static List<ProdutoModel> BuscarProdutoDisponivel()
         {
@@ -27,27 +50,3 @@ namespace RestaurantApp.Service
                 .ToList();
         }*/
 
-        public static List<ProdutoModel> BuscarProdutos()
-        {
-            var listaProdutosDisponiveis = new List<ProdutoModel>();
-
-            Dados.DadosLocais.produtos.ForEach(x =>
-            {
-                var prod = new ProdutoModel()
-                {
-                    ProdutoId = x.ProdutoId,
-                    NomeProduto = x.NomeProduto,
-                    ValorProduto = x.ValorProduto
-                };
-
-                listaProdutosDisponiveis.Add(prod);
-            });
-
-            return listaProdutosDisponiveis;
-        }
-    }
-}
-
-/*
-
- */

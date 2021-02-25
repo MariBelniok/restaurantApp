@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
 using System.Collections.Generic;
+using System.Globalization;
 using RestaurantApp.Service;
 using RestaurantApp.Entities;
+
 
 
 namespace RestaurantApp
@@ -12,16 +13,13 @@ namespace RestaurantApp
     {
         static void Main(string[] args)
         {
-            try
+            List<Produto> produtos = Dados.DadosLocais.LerProdutos();
+
+            foreach(Produto p in produtos)
             {
-                List<ProdutoModel> produtos = ProdutoService.BuscarProdutos();
-                foreach(ProdutoModel prod in produtos)
-                {
-                    Console.WriteLine(prod);
-                }
-                
+                Console.WriteLine(p.NomeProduto);
+                Console.WriteLine(p.ValorProduto);
             }
-            catch { }
         }
-    }
+    }   
 }

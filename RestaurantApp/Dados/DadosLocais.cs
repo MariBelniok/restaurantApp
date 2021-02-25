@@ -9,10 +9,11 @@ namespace RestaurantApp.Dados
 {
     class DadosLocais
     {
-        public static List<Produto> produtos = new List<Produto>();
-        public static void LerProdutos()
+        public static List<Produto> LerProdutos()
         {
             string caminhoProdutos = @"C:\Users\marianna.belniok\source\repos\RestaurantApp\RestaurantApp\Dados\MenuProdutos.csv";
+
+            List<Produto> produtos = new List<Produto>();
 
             string[] lerProdutos = File.ReadAllLines(caminhoProdutos);
             foreach (string produto in lerProdutos)
@@ -32,6 +33,7 @@ namespace RestaurantApp.Dados
                     ProdutoDisponivel = statusProduto
                 });
             }
+            return produtos;
         }
 
     }
