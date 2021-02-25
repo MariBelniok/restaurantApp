@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RestaurantApp.Service.Comanda
+namespace RestaurantApp.Service
 {
     public class ProdutoModel
     {

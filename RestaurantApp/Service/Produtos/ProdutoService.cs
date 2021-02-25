@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
+using System.IO;
 using RestaurantApp.Entities;
-using RestaurantApp.Service.Comanda;
+using RestaurantApp.Service;
 
 namespace RestaurantApp.Service
 {
     class ProdutoService
     {
+        //RETORNA APENAS PRODUTOS DISPONIVEIS
         public List<ProdutoModel> BuscarProduto()
         {
             var listaProdutos = new List<Produto>();
@@ -24,3 +27,7 @@ namespace RestaurantApp.Service
         }
     }
 }
+
+/*
+
+ */
