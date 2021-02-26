@@ -9,6 +9,8 @@ namespace RestaurantApp
         static void Main(string[] args)
         {
             CarregarDados.IniciandoDados();
+            /*----------------------------*/
+
             ComandaViews.IniciarComanda();
             ComandaViews.ContinuarComanda();
 
@@ -17,6 +19,9 @@ namespace RestaurantApp
             PedidoViews.RealizarPedido();
             PedidoViews.MostrarPedido();
 
+
+            /*----------------------------*/
+            SalvarDados.SalvandoDados();
         }
     }
 }

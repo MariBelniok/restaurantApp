@@ -58,7 +58,7 @@ namespace RestaurantApp.Dados
                 string[] dadosDoProduto = produto.Split(",");
                 var produtoId = int.Parse(dadosDoProduto[0]);
                 string nomeProduto = dadosDoProduto[1];
-                float valorProduto = float.Parse(dadosDoProduto[2]);
+                float valorProduto = float.Parse(dadosDoProduto[2], CultureInfo.InvariantCulture);
                 bool produtoDisponivel = bool.Parse(dadosDoProduto[3]);
 
                 listaProdutos.Add(new Produto

@@ -14,7 +14,11 @@ namespace RestaurantApp.Views
             Console.Write($"Numero da comanda: {Dados.DadosLocais.listaComandas.Count + 1}");
             Console.WriteLine();
             Console.WriteLine("Mesas disponiveis: ");
-            Console.WriteLine(Dados.DadosLocais.BuscarMesas());
+            var mesas = MesaService.ListarMesasDisponiveis();
+            foreach (MesaModel mesa in mesas)
+            {
+                Console.WriteLine($"{mesa.MesaId}");
+            }
             Console.Write("Numero da mesa: ");
             int numeroMesa = int.Parse(Console.ReadLine());
 
