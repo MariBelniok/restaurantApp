@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RestaurantApp.Entities;
+using RestaurantApp.Service;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,11 +8,12 @@ namespace RestaurantApp.Views
 {
     class ComandaViews
     {
+        public static List<Comanda> comandas = Dados.DadosLocais.LerComanda();
+        public static int numeroComanda = comandas.Count + 1;
         //PEDIR DADOS DA COMANDA
         public static void IniciarComanda()
         {
-            Console.Write("Numero da comanda: ");
-            int numeroComanda = int.Parse(Console.ReadLine());
+            Console.Write($"Numero da comanda: {numeroComanda}");
 
             Console.Write("Numero da mesa: ");
             int numeroMesa = int.Parse(Console.ReadLine());
@@ -30,7 +33,11 @@ namespace RestaurantApp.Views
                 Console.WriteLine($"SERAO ADICIONADAS {qtePessoas} PESSOAS AO RODIZIO");
             }
             Console.WriteLine("VALOR DO RODIZIO INDIVIDUAL: R$70,00");
-            Console.WriteLine($"VALOR TOTAL ADICIONADO A COMANDA: {valorTotal:F2}");
+            var valorComanda = ComandaService.ValorTotalComanda(valorTotal);
+            Console.WriteLine($"VALOR TOTAL INICIAL ADICIONADO A COMANDA: R${valorComanda:F2}");
+
+            ComandaService.AddComanda(numeroMesa);
+            Dados.DadosLocais.AdicionarComanda();
         }
 
         //VERIFICAR SE REALMENTE DESEJA INICIAR O RODIZIO
@@ -54,6 +61,7 @@ namespace RestaurantApp.Views
                 {
                     Console.WriteLine("Deseja continuar para pedidos: (s/n)");
                     continuarComanda = char.Parse(Console.ReadLine());
+
                     Console.Clear();
                 }
             }

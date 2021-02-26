@@ -20,8 +20,7 @@ namespace RestaurantApp.Views
                 int produtoId = int.Parse(Console.ReadLine());
                 Console.WriteLine("Quantos desse produto você deseja? ");
                 int quantidadeItem = int.Parse(Console.ReadLine());
-                PedidoService.AddProduto(produtoId, quantidadeItem);
-                Dados.DadosLocais.AdicionarPedidos();
+                Dados.DadosLocais.SalvarPedidos();
             }
         }
 
@@ -32,6 +31,7 @@ namespace RestaurantApp.Views
             {
                 Console.WriteLine(obj);
             }
+            ComandaService.TrazerComanda(ComandaViews.numeroComanda);
         }
     }
 }

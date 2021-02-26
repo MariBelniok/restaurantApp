@@ -8,165 +8,161 @@ using RestaurantApp.Service;
 
 namespace RestaurantApp.Dados
 {
-    class DadosLocais
+    public class DadosLocais
     {
         public static string caminhoPedidos = @"C:\Users\marianna.belniok\source\repos\RestaurantApp\RestaurantApp\Dados\Pedidos.csv";
-        public static string caminhoComanda = @"C:\Users\marianna.belniok\source\repos\RestaurantApp\RestaurantApp\Dados\Pedidos.csv";
+        public static string caminhoComanda = @"C:\Users\marianna.belniok\source\repos\RestaurantApp\RestaurantApp\Dados\Comandas.csv";
         public static string caminhoProdutos = @"C:\Users\marianna.belniok\source\repos\RestaurantApp\RestaurantApp\Dados\MenuProdutos.csv";
+        public static string caminhoMesas = @"C:\Users\marianna.belniok\source\repos\RestaurantApp\RestaurantApp\Dados\DadosMesa.csv";
+        public static string caminhoStatus = @"C:\Users\marianna.belniok\source\repos\RestaurantApp\RestaurantApp\Dados\StatusPedido.csv";
 
-        public static List<Produto> LerProdutos()
+        public static List<Comanda> listaComandas = new List<Comanda>();
+        public static List<Produto> listaProdutos = new List<Produto>();
+        public static List<Pedido> listaPedidos = new List<Pedido>();
+        public static List<Mesa> listaMesas = new List<Mesa>();
+        public static List<StatusPedido> listaStatusPedidos = new List<StatusPedido>();
+
+        public static void BuscarComandas()
         {
+            string[] comandas = File.ReadAllLines(caminhoComanda);
+            foreach (string comanda in comandas)
+            {
+                string[] dadosComanda = comanda.Split(",");
 
-            List<Produto> produtos = new List<Produto>();
 
+                listaComandas.Add(new Comanda()
+                {
+                    ComandaId = int.Parse(dadosComanda[0]),
+                    MesaId = int.Parse(dadosComanda[1]),
+                    DataHoraEntrada = DateTime.Parse(dadosComanda[2]),
+                    DataHoraSaida = DateTime.Parse(dadosComanda[3]),
+                    Valor = float.Parse(dadosComanda[4]),
+                    ComandaPaga = bool.Parse(dadosComanda[5]),
+                    QuantidadePessoasNaMesa = int.Parse(dadosComanda[6]),
+                });
+            }
+        }
+        public static void BuscarProdutos()
+        {
             string[] lerProdutos = File.ReadAllLines(caminhoProdutos);
             foreach (string produto in lerProdutos)
             {
                 string[] dadosDoProduto = produto.Split(",");
 
-                int produtoId = int.Parse(dadosDoProduto[0]);
-                string nomeProduto = dadosDoProduto[1];
-                float valorProduto = float.Parse(dadosDoProduto[2], CultureInfo.InvariantCulture);
-                bool statusProduto = bool.Parse(dadosDoProduto[3]);
-
-                produtos.Add(new Produto
+                listaProdutos.Add(new Produto
                 {
-                    ProdutoId = produtoId,
-                    NomeProduto = nomeProduto,
-                    ValorProduto = valorProduto,
-                    ProdutoDisponivel = statusProduto
+                    ProdutoId = int.Parse(dadosDoProduto[0]),
+                    NomeProduto = dadosDoProduto[1],
+                    ValorProduto = float.Parse(dadosDoProduto[2]),
+                    ProdutoDisponivel = bool.Parse(dadosDoProduto[3]),
                 });
             }
-            return produtos;
         }
 
-        public static List<Mesa> LerMesas()
+        public static void BuscarMesas()
         {
-            List<Mesa> mesas = new List<Mesa>();
-
-            string[] lerProdutos = File.ReadAllLines(caminhoProdutos);
-            foreach (string produto in lerProdutos)
+            string[] mesas = File.ReadAllLines(caminhoMesas);
+            foreach (string mesa in mesas)
             {
-                string[] dadosDaMesa = produto.Split(",");
+                string[] dadosDaMesa = mesa.Split(",");
 
-                int mesaId = int.Parse(dadosDaMesa[0]);
-                int capacidadeMesa = int.Parse(dadosDaMesa[1]);
-                bool mesaDisponivel = bool.Parse(dadosDaMesa[2]);
-
-                mesas.Add(new Mesa
+                listaMesas.Add(new Mesa
                 {
-                    MesaId = mesaId,
-                    CapacidadePorMesa = capacidadeMesa,
-                    MesaDisponivel = mesaDisponivel
-                });
-            }
-            return mesas;
-        }
-
-        public static void AdicionarPedidos()
-        {
-            
-            var pedidos = new List<Pedido>();
-
-            var pedidosRealizados = PedidoService.produtoPedido;
-
-            using(StreamWriter sw = File.AppendText(caminhoPedidos))
-            {
-                pedidosRealizados.ForEach(p =>
-                {
-                    sw.WriteLine(p);
+                    MesaId = int.Parse(dadosDaMesa[0]),
+                    CapacidadePorMesa = int.Parse(dadosDaMesa[1]),
+                    MesaDisponivel = bool.Parse(dadosDaMesa[2])
                 });
             }
         }
-        public static List<Pedido> LerPedidos()
+
+
+        public static void BuscarPedidos()
         {
-
-            List<Pedido> pedidos = new List<Pedido>();
-
             string[] lerPedidos = File.ReadAllLines(caminhoPedidos);
             foreach (string pedido in lerPedidos)
             {
                 string[] dadosDoPedido = pedido.Split(",");
 
-                int pedidoId = int.Parse(dadosDoPedido[0]);
-                int comandaId = int.Parse(dadosDoPedido[1]);
-                int produtoId = int.Parse(dadosDoPedido[2]);
-                int quantidade = int.Parse(dadosDoPedido[3]);
-
-                pedidos.Add(new Pedido
+                listaPedidos.Add(new Pedido
                 {
-                    PedidoId = pedidoId,
-                    ComandaId = comandaId,
-                    ProdutoId = produtoId,
-                    QuantidadePorProduto = quantidade
+                    PedidoId = int.Parse(dadosDoPedido[0]),
+                    ComandaId = int.Parse(dadosDoPedido[1]),
+                    ProdutoId = int.Parse(dadosDoPedido[2]),
+                    QuantidadePorProduto = int.Parse(dadosDoPedido[3]),
+                    AndamentoDoPedido = int.Parse(dadosDoPedido[4])
                 });
             }
-            return pedidos;
         }
 
-        public static void AdicionarComanda()
+        public static void BuscarComanda()
         {
-            using(StreamWriter sw = File.AppendText(caminhoComanda))
-            {
-                //var novaComanda = ComandaService.NovaComanda();
-                sw.WriteLine();
-            }
-        }
-
-        public static List<Comanda> LerComanda()
-        {
-
-            List<Comanda> comanda = new List<Comanda>();
-
             string[] lerComandas = File.ReadAllLines(caminhoComanda);
             foreach (string c in lerComandas)
             {
                 string[] dadosDaComanda = c.Split(",");
-
-                int comandaId = int.Parse(dadosDaComanda[0]);
-                int mesaId = int.Parse(dadosDaComanda[1]);
-                DateTime dataHoraEntrada = DateTime.Parse(dadosDaComanda[2]);
-                DateTime dataHoraSaida = DateTime.Parse(dadosDaComanda[3]);
-                float valor = float.Parse(dadosDaComanda[4]);
-                bool comandaPaga = bool.Parse(dadosDaComanda[5]);
-                int quantidadePessoasMesa = int.Parse(dadosDaComanda[6]);
-
-                comanda.Add(new Comanda
+                listaComandas.Add(new Comanda
                 {
-                    ComandaId = comandaId,
-                    MesaId = mesaId,
-                    DataHoraEntrada = dataHoraEntrada,
-                    DataHoraSaida = dataHoraSaida,
-                    Valor = valor,
-                    ComandaPaga = comandaPaga,
-                    QuantidadePessoasNaMesa = quantidadePessoasMesa
+                    ComandaId = int.Parse(dadosDaComanda[0]),
+                    MesaId = int.Parse(dadosDaComanda[1]),
+                    DataHoraEntrada = DateTime.Parse(dadosDaComanda[2]),
+                    DataHoraSaida = DateTime.Parse(dadosDaComanda[3]),
+                    Valor = float.Parse(dadosDaComanda[4]),
+                    ComandaPaga = bool.Parse(dadosDaComanda[5]),
+                    QuantidadePessoasNaMesa = int.Parse(dadosDaComanda[6])
                 });
             }
-            return comanda;
         }
 
-        public static List<StatusPedido> LerStatusPedido()
+        public static void BuscarStatusPedido()
         {
-
-            List<StatusPedido> status = new List<StatusPedido>();
-
-            string[] lerStatus = File.ReadAllLines(caminhoComanda);
+            string[] lerStatus = File.ReadAllLines(caminhoStatus);
             foreach (string s in lerStatus)
             {
                 string[] dadosDoStatus = s.Split(",");
 
-                int statusId = int.Parse(dadosDoStatus[0]);
-                string descricao = dadosDoStatus[1];
-
-                status.Add(new StatusPedido
+                listaStatusPedidos.Add(new StatusPedido
                 {
-                    StatusId = statusId,
-                    Descricao = descricao
+                    StatusId = int.Parse(dadosDoStatus[0]),
+                    Descricao = dadosDoStatus[1]
                 });
 
             }
-            return status;
         }
 
+        public static void SalvarComandas()
+        {
+            using (StreamWriter sw = File.AppendText(caminhoComanda))
+            {
+                listaComandas.ForEach(c =>
+                {
+                    var comanda = string.Join(',', c.ComandaId, c.MesaId, c.DataHoraEntrada, c.DataHoraSaida, c.Valor, c.ComandaPaga, c.QuantidadePessoasNaMesa);
+                    sw.WriteLine(comanda);
+                });
+            }
+        }
+
+        public static void SalvarPedidos()
+        {
+            using (StreamWriter sw = File.AppendText(caminhoPedidos))
+            {
+                listaPedidos.ForEach(p =>
+                {
+                    var pedidos = (string.Join(',', p.PedidoId, p.ComandaId, p.ProdutoId, p.QuantidadePorProduto, p.AndamentoDoPedido));
+                    sw.WriteLine(p);
+                });
+            }
+        }
+
+        public static void SalvarMesa()
+        {
+            using (StreamWriter sw = File.AppendText(caminhoPedidos))
+            {
+                listaMesas.ForEach(m =>
+                {
+                    var pedidos = (string.Join(',', m.MesaId, m.CapacidadePorMesa, m.MesaDisponivel));
+                    sw.WriteLine(pedidos);
+                });
+            }
+        }
     }
 }

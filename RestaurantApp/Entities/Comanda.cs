@@ -4,41 +4,14 @@ using System.Text;
 
 namespace RestaurantApp.Entities
 {
-    class Comanda
+    public class Comanda
     {
         public int ComandaId { get; set; }
         public int MesaId { get; set; }
         public DateTime DataHoraEntrada { get; set; }
-        public DateTime DataHoraSaida;
+        public DateTime? DataHoraSaida { get; set; }
         public float Valor { get; set; }
-        public bool ComandaPaga;
+        public bool ComandaPaga { get; set; }
         public int QuantidadePessoasNaMesa { get; set; }
-
-        public DateTime dataHoraSaida
-        {
-            get { return DataHoraSaida; }
-            set {
-                if (comandaPaga)
-                {
-                    DataHoraSaida = DateTime.Now;
-                }
-            }
-        }
-
-        public bool comandaPaga
-        {
-            get { return ComandaPaga; }
-            set
-            {
-                if (comandaPaga)
-                {
-                    ComandaPaga = true;
-                }
-                else
-                {
-                    ComandaPaga = false;
-                }
-            }
-        }
     }
 }

@@ -1,10 +1,11 @@
-﻿using RestaurantApp.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace RestaurantApp.Service
 {
-    class PedidoModel
+    public class AdicionarModel
     {
-        public int PedidoId { get; private set; }
         public int ComandaId { get; private set; }
         public int ProdutoId { get; set; }
         public int QuantidadePorProduto { get; set; }

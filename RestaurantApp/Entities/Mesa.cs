@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RestaurantApp.Entities
+﻿namespace RestaurantApp.Entities
 {
-    class Mesa
+    public class Mesa
     {
         public int MesaId { get; set; }
         public int CapacidadePorMesa { get; set; }

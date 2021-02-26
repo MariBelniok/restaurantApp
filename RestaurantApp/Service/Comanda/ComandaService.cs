@@ -1,33 +1,23 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using RestaurantApp.Entities;
+using RestaurantApp.Views;
+using RestaurantApp.Dados;
 
 namespace RestaurantApp.Service
 {
     class ComandaService
     {
-        public static List<ComandaModel> ListarComandas()
+        public static List<Comanda> novaComanda = new List<Comanda>();
+        public static List<ComandaModel> comandas = new List<ComandaModel>();
+        
+        public static void AddComanda(int mesa)
         {
-            var comandas = new List<ComandaModel>();
-            var todasComandas = Dados.DadosLocais.LerComanda();
-
-            todasComandas.ForEach(x =>
-            {
-                var com = new ComandaModel()
-                {
-                    ComandaId = x.ComandaId,
-                    MesaId = x.MesaId,
-                    DataHoraEntrada = x.DataHoraEntrada,
-                    DataHoraSaida = x.DataHoraSaida,
-                    Valor = x.Valor,
-                    ComandaPaga = x.ComandaPaga,
-                    QuantidadePessoasNaMesa = x.QuantidadePessoasNaMesa
-                };
-
-                comandas.Add(com);
-            });
-
-            return comandas;
+            
+        }
+        public static void ListarComandas()
+        {
+            
         }
 
         public static string TrazerComanda(int comandaId)
@@ -50,6 +40,13 @@ namespace RestaurantApp.Service
                 });
 
             return dadosComanda;
+        }
+
+        public static float ValorTotalComanda(float valor)
+        {
+            float sum = 0;
+            sum += valor;
+            return sum;
         }
     }
 }

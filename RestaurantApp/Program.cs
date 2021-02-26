@@ -5,8 +5,7 @@ using System.Globalization;
 using RestaurantApp.Service;
 using RestaurantApp.Entities;
 using RestaurantApp.Views;
-
-
+using RestaurantApp.Dados;
 
 namespace RestaurantApp
 {
@@ -21,7 +20,8 @@ namespace RestaurantApp
 
             PedidoViews.RealizarPedido();
             PedidoViews.MostrarPedido();
- 
+
+            DadosLocais.SalvarComandas();
         }
     }
 }
