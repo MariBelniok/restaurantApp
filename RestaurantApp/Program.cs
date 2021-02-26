@@ -14,38 +14,14 @@ namespace RestaurantApp
     {
         static void Main(string[] args)
         {
-            Console.Write("Numero da comanda: ");
-            int numeroComanda = int.Parse(Console.ReadLine());
 
-            Console.Write("Numero da mesa: ");
-            int numeroMesa = int.Parse(Console.ReadLine());
+            ComandaViews.IniciarComanda();
+            ComandaViews.ContinuarComanda();
 
-            Console.WriteLine("Quantidade de pessoas: ");
-            int qtePessoas = int.Parse(Console.ReadLine());
-
-            float valorTotal = (float)qtePessoas * 70;
-
-            Console.WriteLine("BEM VINDO AO RESTAURANTE SUTEKINA RANCHI");
-            Console.WriteLine($"SERa ADICIONADO {qtePessoas} AO RODIZIO");
-            Console.WriteLine("VALOR DO RODIZIO INDIVIDUAL: R$70,00");
-            Console.WriteLine($"VALOR TOTAL ADICIONADO A COMANDA: {valorTotal:F2}");
-
-            Console.WriteLine("Deseja continuar para pedidos: (s/n)");
-            char continuarComanda = char.Parse(Console.ReadLine());
-            ComandaViews.ContinuarComanda(continuarComanda);
-            
+            ProdutosViews.MostrarMenu();
 
             
-            //MOSTRAR MENU
-            Console.WriteLine("------------------------------------------");
-            Console.WriteLine("MENU: ");
-            List<ProdutoModel> produtos = ProdutoService.ListarProdutos();
-
-            foreach (ProdutoModel p in produtos)
-            {
-                Console.WriteLine($"{p.ProdutoId} - {p.NomeProduto} - R${p.ValorProduto:F2}");
-            }
-            Console.WriteLine("------------------------------------------");
+    
 
             //PEDIDO CLIENTE
             Console.WriteLine("Favor realizar seu pedido. Máximo de 2 pedidos por cliente.");
@@ -57,7 +33,7 @@ namespace RestaurantApp
             {
                 Console.WriteLine("Favor informar o número do item desejado: ");
                 int produtoId = int.Parse(Console.ReadLine());
-                PedidoService.AddProdutoMenu(produtoId);
+                PedidoService.AddProduto(produtoId);
             }
 
             //MOSTRAR PEDIDO

@@ -1,39 +1,57 @@
 ﻿using System.IO;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Linq;
 using RestaurantApp.Entities;
 
 namespace RestaurantApp.Service
 {
     class PedidoService
     {
-        /*public static List<Pedido> NovoPedido()
-        {
-            List<Pedido> pedidos = new List<Pedido>();
-
-            pedidos.Add(new Pedido {
-                PedidoId = pedidoId,
-                ComandaId = comandaId,
-                ProdutoId = produtoId,
-                QuantidadePorProduto = Quantidade,
-            });
-
-            return pedidos;
-        }*/
         public static List<string> produtoPedido = new List<string>();
-        public static List<string> AddProdutoMenu(int produtoId)
+        public static void AddProduto(int produtoId)
         {
             List<ProdutoModel> produtos = ProdutoService.ListarProdutos();
 
-            foreach (ProdutoModel p in produtos)
+            produtos.ForEach(p =>
             {
                 if (p.ProdutoId == produtoId)
                 {
-                    produtoPedido.Add($"{p.ProdutoId},{p.NomeProduto},{p.ValorProduto}.00");
+                    produtoPedido.Add($"{p.ProdutoId},{p.NomeProduto},{p.ValorProduto:F2}");
+                    SomarProdutos(p.ValorProduto);
                 }
-            }
+            });
 
-            return produtoPedido;
         }
+
+        public static void RemoveProduto(int produtoId)
+        {
+            List<ProdutoModel> produtos = ProdutoService.ListarProdutos();
+
+            produtos.ForEach(p =>
+            {
+                if (p.ProdutoId == produtoId)
+                {
+                    produtoPedido.Remove($"{p.ProdutoId},{p.NomeProduto},{p.ValorProduto:F2}");
+                    DiminuirProduto(p.ValorProduto);
+                }
+            });
+        }
+
+        public static float SomarProdutos(float valor)
+        {
+            float sum = 0;
+            sum += valor;
+
+            return sum;
+        }
+
+        public static float DiminuirProduto(float valor)
+        {
+            float sum = 0;
+            sum += valor;
+
+            return sum;
+        }
+
     }
 }
