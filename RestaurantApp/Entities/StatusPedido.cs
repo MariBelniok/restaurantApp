@@ -1,10 +1,8 @@
-﻿using RestaurantApp.Entities.Enums;
-
-namespace RestaurantApp.Entities
+﻿namespace RestaurantApp.Entities
 {
     class StatusPedido
     {
-        public int Status { get; set; }
-        public StatusEnum Descricao { get; set; }
+        public int StatusId { get; set; }
+        public string Descricao { get; set; }
     }
 }

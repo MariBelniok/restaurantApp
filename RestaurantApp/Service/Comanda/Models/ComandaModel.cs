@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RestaurantApp.Service
 {
-    class Comanda
+    class ComandaModel
     {
         public int ComandaId { get; set; }
         public int MesaId { get; set; }

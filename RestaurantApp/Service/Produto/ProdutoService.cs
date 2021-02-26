@@ -21,6 +21,7 @@ namespace RestaurantApp.Service
                 })
                 .ToList();
         }
+
         //LISTA PRODUTOS FILTRADOS
         public static List<ProdutoModel> ListarProdutos()
         {

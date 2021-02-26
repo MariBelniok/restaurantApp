@@ -14,15 +14,6 @@ namespace RestaurantApp.Entities
         public bool ComandaPaga;
         public int QuantidadePessoasNaMesa { get; set; }
 
-        public Comanda(int comandaId, int mesaId, float valor, int quantidadePessoasNaMesa)
-        {
-            ComandaId = comandaId;
-            MesaId = mesaId;
-            DataHoraEntrada = DateTime.Now;
-            Valor = valor;
-            QuantidadePessoasNaMesa = quantidadePessoasNaMesa;
-        }
-
         public DateTime dataHoraSaida
         {
             get { return DataHoraSaida; }

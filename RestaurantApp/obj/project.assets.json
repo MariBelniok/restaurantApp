@@ -8,19 +8,19 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\Dell\\.nuget\\packages\\": {}
+    "C:\\Users\\marianna.belniok\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Dell\\Desktop\\restaurantApp\\RestaurantApp\\RestaurantApp.csproj",
+      "projectUniqueName": "C:\\Users\\marianna.belniok\\source\\repos\\RestaurantApp\\RestaurantApp\\RestaurantApp.csproj",
       "projectName": "RestaurantApp",
-      "projectPath": "C:\\Users\\Dell\\Desktop\\restaurantApp\\RestaurantApp\\RestaurantApp.csproj",
-      "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Dell\\Desktop\\restaurantApp\\RestaurantApp\\obj\\",
+      "projectPath": "C:\\Users\\marianna.belniok\\source\\repos\\RestaurantApp\\RestaurantApp\\RestaurantApp.csproj",
+      "packagesPath": "C:\\Users\\marianna.belniok\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\marianna.belniok\\source\\repos\\RestaurantApp\\RestaurantApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\marianna.belniok\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

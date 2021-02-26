@@ -7,8 +7,11 @@ namespace RestaurantApp.Service
 {
     class PedidoService
     {
+        public static float ValorTotalPedido = 0;
+
         public static List<string> produtoPedido = new List<string>();
-        public static void AddProduto(int produtoId)
+
+        public static void AddProduto(int produtoId, int quantidadeItem)
         {
             List<ProdutoModel> produtos = ProdutoService.ListarProdutos();
 
@@ -16,7 +19,7 @@ namespace RestaurantApp.Service
             {
                 if (p.ProdutoId == produtoId)
                 {
-                    produtoPedido.Add($"{p.ProdutoId},{p.NomeProduto},{p.ValorProduto:F2}");
+                    produtoPedido.Add($"{p.ProdutoId},{p.NomeProduto},{quantidadeItem},{p.ValorProduto:F2},1");
                     SomarProdutos(p.ValorProduto);
                 }
             });
@@ -39,19 +42,12 @@ namespace RestaurantApp.Service
 
         public static float SomarProdutos(float valor)
         {
-            float sum = 0;
-            sum += valor;
-
-            return sum;
+            return ValorTotalPedido += valor;
         }
 
         public static float DiminuirProduto(float valor)
         {
-            float sum = 0;
-            sum += valor;
-
-            return sum;
+            return ValorTotalPedido -= valor;
         }
-
     }
 }
