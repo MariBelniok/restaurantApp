@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using RestaurantApp.Entities;
 
-namespace RestaurantApp.Service.Comanda
+namespace RestaurantApp.Service
 {
     class ComandaService
     {
+        
     }
 }

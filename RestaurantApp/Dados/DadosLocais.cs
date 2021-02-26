@@ -9,7 +9,7 @@ namespace RestaurantApp.Dados
 {
     class DadosLocais
     {
-        public static string caminhoProdutos = @"C:\Users\marianna.belniok\source\repos\RestaurantApp\RestaurantApp\Dados\MenuProdutos.csv";
+        public static string caminhoProdutos = @"C:\Users\Dell\Desktop\restaurantApp\RestaurantApp\Dados\MenuProdutos.csv";
 
         public static List<Produto> LerProdutos()
         {

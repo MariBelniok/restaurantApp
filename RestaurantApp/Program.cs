@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using RestaurantApp.Service;
 using RestaurantApp.Entities;
+using RestaurantApp.Views;
 
 
 
@@ -13,13 +14,28 @@ namespace RestaurantApp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Favor informar o numero da comanda: ");
+            Console.Write("Numero da comanda: ");
             int numeroComanda = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Favor informar o numero da mesa: ");
+            Console.Write("Numero da mesa: ");
             int numeroMesa = int.Parse(Console.ReadLine());
 
+            Console.WriteLine("Quantidade de pessoas: ");
+            int qtePessoas = int.Parse(Console.ReadLine());
 
+            float valorTotal = (float)qtePessoas * 70;
+
+            Console.WriteLine("BEM VINDO AO RESTAURANTE SUTEKINA RANCHI");
+            Console.WriteLine($"SERa ADICIONADO {qtePessoas} AO RODIZIO");
+            Console.WriteLine("VALOR DO RODIZIO INDIVIDUAL: R$70,00");
+            Console.WriteLine($"VALOR TOTAL ADICIONADO A COMANDA: {valorTotal:F2}");
+
+            Console.WriteLine("Deseja continuar para pedidos: (s/n)");
+            char continuarComanda = char.Parse(Console.ReadLine());
+            ComandaViews.ContinuarComanda(continuarComanda);
+            
+
+            
             //MOSTRAR MENU
             Console.WriteLine("------------------------------------------");
             Console.WriteLine("MENU: ");
@@ -36,13 +52,12 @@ namespace RestaurantApp
             Console.WriteLine("Quantos items do menu deseja pedir? ");
             int numeroItems = int.Parse(Console.ReadLine());
 
-            List<string> produtoPedido = new List<string>();
+            List<string> produtoPedido = PedidoService.produtoPedido;
             for (int i = 1; i <= numeroItems; i++)
             {
                 Console.WriteLine("Favor informar o número do item desejado: ");
                 int produtoId = int.Parse(Console.ReadLine());
-
-                //produtoPedido = PedidoService.AddProdutoMenu();
+                PedidoService.AddProdutoMenu(produtoId);
             }
 
             //MOSTRAR PEDIDO
@@ -51,6 +66,7 @@ namespace RestaurantApp
             {
                 Console.WriteLine(obj);
             }
+            
         }
     }
 }

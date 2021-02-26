@@ -20,9 +20,9 @@ namespace RestaurantApp.Service
 
             return pedidos;
         }*/
-        public static void AddProdutoMenu(int produtoId)
+        public static List<string> produtoPedido = new List<string>();
+        public static List<string> AddProdutoMenu(int produtoId)
         {
-            List<string> produtoPedido = new List<string>();
             List<ProdutoModel> produtos = ProdutoService.ListarProdutos();
 
             foreach (ProdutoModel p in produtos)
@@ -32,6 +32,8 @@ namespace RestaurantApp.Service
                     produtoPedido.Add($"{p.ProdutoId},{p.NomeProduto},{p.ValorProduto}.00");
                 }
             }
+
+            return produtoPedido;
         }
     }
 }
