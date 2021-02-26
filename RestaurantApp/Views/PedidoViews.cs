@@ -7,7 +7,6 @@ namespace RestaurantApp.Views
 {
     class PedidoViews
     {
-        public static List<string> produtoPedido = PedidoService.produtoPedido;
         public static void RealizarPedido()
         {
             Console.WriteLine("Favor realizar seu pedido.");
@@ -20,18 +19,26 @@ namespace RestaurantApp.Views
                 int produtoId = int.Parse(Console.ReadLine());
                 Console.WriteLine("Quantos desse produto você deseja? ");
                 int quantidadeItem = int.Parse(Console.ReadLine());
-                Dados.DadosLocais.SalvarPedidos();
+                var model = new AdicionarModel()
+                {
+                    AndamentoDoProduto = 1,
+                    ComandaId = Dados.DadosLocais.listaComandas.Count+1,
+                    ProdutoId = produtoId,
+                    QuantidadePorProduto = quantidadeItem
+                };
+
+                PedidoService.AddPedido(model);
             }
         }
 
         public static void MostrarPedido()
         {
             Console.WriteLine("PEDIDO: ");
-            foreach (string obj in produtoPedido)
-            {
-                Console.WriteLine(obj);
-            }
-            ComandaService.TrazerComanda(ComandaViews.numeroComanda);
+            Dados.DadosLocais.listaPedidos.ForEach(p => {
+                Console.WriteLine( $"{p.PedidoId}, {p.QuantidadePorProduto}");
+            });
+            
+            ComandaService.TrazerComanda(Dados.DadosLocais.listaComandas.Count + 1);
         }
     }
 }

@@ -1,15 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace RestaurantApp.Service.Mesa
+namespace RestaurantApp.Service
 {
     class MesaService
     {
         public static List<MesaModel> BuscarMesaDisponivel()
         {
-            var todasMesas = Dados.DadosLocais.LerMesas();
-
-            return todasMesas
+            return Dados.DadosLocais.listaMesas
                 .Where(p => p.MesaDisponivel)
                 .Select(a => new MesaModel()
                 {

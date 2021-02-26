@@ -14,7 +14,7 @@ namespace RestaurantApp.Service
 
         public static List<string> produtoPedido = new List<string>();
 
-        public static void AddProduto(AdicionarModel model)
+        public static void AddPedido(AdicionarModel model)
         {
             DadosLocais.listaPedidos.Add(new Pedido()
             {
@@ -39,21 +39,17 @@ namespace RestaurantApp.Service
 
         public static void AtualizarProduto(int pedidoId, int quantidadeItem)
         {
-            List<ProdutoModel> produtos = ProdutoService.ListarProdutos();
-            List<Pedido> pedidos = Dados.DadosLocais.LerPedidos();
-
-            var caminhoPedidos = Dados.DadosLocais.caminhoPedidos;
+            var caminhoPedidos = DadosLocais.caminhoPedidos;
 
             File.WriteAllText(caminhoPedidos, string.Empty);
 
-            pedidos.ForEach(x =>
+            DadosLocais.listaPedidos.ForEach(x =>
             {
                 if (x.PedidoId == pedidoId)
                 {
-                    produtos.ForEach(p =>
+                    DadosLocais.listaPedidos.ForEach(p =>
                     {
-                        produtoPedido.Add(string.Join(',', pedidoId, ComandaViews.numeroComanda, p.ProdutoId, quantidadeItem, "1"));
-                        SomarProdutos(p.ValorProduto, quantidadeItem);
+                        produtoPedido.Add(string.Join(',', pedidoId, DadosLocais.listaComandas.Count + 1, p.ProdutoId, quantidadeItem, "1"));
                     });
                 }
 

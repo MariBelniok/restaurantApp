@@ -22,10 +22,9 @@ namespace RestaurantApp.Service
 
         public static string TrazerComanda(int comandaId)
         {
-            var todasComandas = ListarComandas();
             string dadosComanda = "";
 
-            todasComandas
+            DadosLocais.listaComandas
                 .ForEach(x =>
                 {
                     if (x.ComandaId == comandaId)

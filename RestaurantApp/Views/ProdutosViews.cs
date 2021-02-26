@@ -13,7 +13,7 @@ namespace RestaurantApp.Views
             Console.WriteLine();
             Console.WriteLine("------------------------------------------");
             Console.WriteLine("MENU: ");
-            List<ProdutoModel> produtos = ProdutoService.ListarProdutos();
+            var produtos = ProdutoService.ListarProdutos();
 
             foreach (ProdutoModel p in produtos)
             {

@@ -6,12 +6,11 @@ namespace RestaurantApp.Service
 {
     class ProdutoService
     {
+        
         //FILTRA PRODUTOS DISPONIVEIS
         public static List<ProdutoModel> BuscarProdutoDisponivel()
         {
-            var todosProdutos = Dados.DadosLocais.LerProdutos();
-
-            return todosProdutos
+            return Dados.DadosLocais.listaProdutos
                 .Where(p => p.ProdutoDisponivel)
                 .Select(a => new ProdutoModel()
                 {
@@ -22,12 +21,11 @@ namespace RestaurantApp.Service
                 .ToList();
         }
 
-        //LISTA PRODUTOS FILTRADOS
+
         public static List<ProdutoModel> ListarProdutos()
         {
-            var listaProdutosDisponiveis = new List<ProdutoModel>();
-
-            BuscarProdutoDisponivel().ForEach(x =>
+            List<ProdutoModel> produtos = new List<ProdutoModel>();
+            Dados.DadosLocais.listaProdutos.ForEach(x =>
             {
                 var prod = new ProdutoModel()
                 {
@@ -35,11 +33,10 @@ namespace RestaurantApp.Service
                     NomeProduto = x.NomeProduto,
                     ValorProduto = x.ValorProduto,
                 };
-
-                listaProdutosDisponiveis.Add(prod);
+                produtos.Add(prod);
             });
 
-            return listaProdutosDisponiveis;
+            return produtos;
         }
     }
 }

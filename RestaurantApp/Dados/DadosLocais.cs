@@ -22,111 +22,118 @@ namespace RestaurantApp.Dados
         public static List<Mesa> listaMesas = new List<Mesa>();
         public static List<StatusPedido> listaStatusPedidos = new List<StatusPedido>();
 
-        public static void BuscarComandas()
+        public static List<Comanda> BuscarComandas()
         {
             string[] comandas = File.ReadAllLines(caminhoComanda);
             foreach (string comanda in comandas)
             {
                 string[] dadosComanda = comanda.Split(",");
+                int comandaId = int.Parse(dadosComanda[0]);
+                int mesaId = int.Parse(dadosComanda[1]);
+                DateTime dataHoraEntrada = DateTime.Parse(dadosComanda[2]);
+                DateTime dataHoraSaida = DateTime.Parse(dadosComanda[3]);
+                float valor = float.Parse(dadosComanda[4]);
+                bool comandaPaga = bool.Parse(dadosComanda[5]);
+                int quantidadePessoasNaMesa = int.Parse(dadosComanda[6]);
 
 
                 listaComandas.Add(new Comanda()
                 {
-                    ComandaId = int.Parse(dadosComanda[0]),
-                    MesaId = int.Parse(dadosComanda[1]),
-                    DataHoraEntrada = DateTime.Parse(dadosComanda[2]),
-                    DataHoraSaida = DateTime.Parse(dadosComanda[3]),
-                    Valor = float.Parse(dadosComanda[4]),
-                    ComandaPaga = bool.Parse(dadosComanda[5]),
-                    QuantidadePessoasNaMesa = int.Parse(dadosComanda[6]),
+                    ComandaId = comandaId,
+                    MesaId = mesaId,
+                    DataHoraEntrada = dataHoraEntrada,
+                    DataHoraSaida = dataHoraSaida,
+                    Valor = valor,
+                    ComandaPaga = comandaPaga,
+                    QuantidadePessoasNaMesa = quantidadePessoasNaMesa
                 });
             }
+            return listaComandas;
         }
-        public static void BuscarProdutos()
+        public static List<Produto> BuscarProdutos()
         {
             string[] lerProdutos = File.ReadAllLines(caminhoProdutos);
             foreach (string produto in lerProdutos)
             {
                 string[] dadosDoProduto = produto.Split(",");
+                var produtoId = int.Parse(dadosDoProduto[0]);
+                string nomeProduto = dadosDoProduto[1];
+                float valorProduto = float.Parse(dadosDoProduto[2]);
+                bool produtoDisponivel = bool.Parse(dadosDoProduto[3]);
 
                 listaProdutos.Add(new Produto
                 {
-                    ProdutoId = int.Parse(dadosDoProduto[0]),
-                    NomeProduto = dadosDoProduto[1],
-                    ValorProduto = float.Parse(dadosDoProduto[2]),
-                    ProdutoDisponivel = bool.Parse(dadosDoProduto[3]),
+                    ProdutoId = produtoId,
+                    NomeProduto = nomeProduto,
+                    ValorProduto = valorProduto,
+                    ProdutoDisponivel = produtoDisponivel
                 });
             }
+            return listaProdutos;
         }
 
-        public static void BuscarMesas()
+        public static List<Mesa> BuscarMesas()
         {
             string[] mesas = File.ReadAllLines(caminhoMesas);
             foreach (string mesa in mesas)
             {
                 string[] dadosDaMesa = mesa.Split(",");
+                int mesaId = int.Parse(dadosDaMesa[0]);
+                int capacidadePorMesa = int.Parse(dadosDaMesa[1]);
+                bool mesaDisponivel = bool.Parse(dadosDaMesa[2]);
 
                 listaMesas.Add(new Mesa
                 {
-                    MesaId = int.Parse(dadosDaMesa[0]),
-                    CapacidadePorMesa = int.Parse(dadosDaMesa[1]),
-                    MesaDisponivel = bool.Parse(dadosDaMesa[2])
+                    MesaId = mesaId,
+                    CapacidadePorMesa = capacidadePorMesa,
+                    MesaDisponivel = mesaDisponivel
                 });
             }
+            return listaMesas;
         }
 
 
-        public static void BuscarPedidos()
+        public static List<Pedido> BuscarPedidos()
         {
             string[] lerPedidos = File.ReadAllLines(caminhoPedidos);
             foreach (string pedido in lerPedidos)
             {
                 string[] dadosDoPedido = pedido.Split(",");
+                int pedidoId = int.Parse(dadosDoPedido[0]);
+                int comandaId = int.Parse(dadosDoPedido[1]);
+                int produtoId = int.Parse(dadosDoPedido[2]);
+                int quantidadePorProduto = int.Parse(dadosDoPedido[3]);
+                int andamentoDoPedido = int.Parse(dadosDoPedido[4]);
 
                 listaPedidos.Add(new Pedido
                 {
-                    PedidoId = int.Parse(dadosDoPedido[0]),
-                    ComandaId = int.Parse(dadosDoPedido[1]),
-                    ProdutoId = int.Parse(dadosDoPedido[2]),
-                    QuantidadePorProduto = int.Parse(dadosDoPedido[3]),
-                    AndamentoDoPedido = int.Parse(dadosDoPedido[4])
+                    PedidoId = pedidoId,
+                    ComandaId = comandaId,
+                    ProdutoId = produtoId,
+                    QuantidadePorProduto = quantidadePorProduto,
+                    AndamentoDoPedido = andamentoDoPedido
                 });
             }
+            return listaPedidos;
         }
 
-        public static void BuscarComanda()
-        {
-            string[] lerComandas = File.ReadAllLines(caminhoComanda);
-            foreach (string c in lerComandas)
-            {
-                string[] dadosDaComanda = c.Split(",");
-                listaComandas.Add(new Comanda
-                {
-                    ComandaId = int.Parse(dadosDaComanda[0]),
-                    MesaId = int.Parse(dadosDaComanda[1]),
-                    DataHoraEntrada = DateTime.Parse(dadosDaComanda[2]),
-                    DataHoraSaida = DateTime.Parse(dadosDaComanda[3]),
-                    Valor = float.Parse(dadosDaComanda[4]),
-                    ComandaPaga = bool.Parse(dadosDaComanda[5]),
-                    QuantidadePessoasNaMesa = int.Parse(dadosDaComanda[6])
-                });
-            }
-        }
-
-        public static void BuscarStatusPedido()
+        public static List<StatusPedido> BuscarStatusPedido()
         {
             string[] lerStatus = File.ReadAllLines(caminhoStatus);
             foreach (string s in lerStatus)
             {
                 string[] dadosDoStatus = s.Split(",");
+                int statusId = int.Parse(dadosDoStatus[0]);
+                string descricao = dadosDoStatus[1];
 
                 listaStatusPedidos.Add(new StatusPedido
                 {
-                    StatusId = int.Parse(dadosDoStatus[0]),
-                    Descricao = dadosDoStatus[1]
+                    StatusId = statusId,
+                    Descricao = descricao
                 });
 
             }
+            return listaStatusPedidos;
         }
 
         public static void SalvarComandas()

@@ -1,9 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Globalization;
-using RestaurantApp.Service;
-using RestaurantApp.Entities;
 using RestaurantApp.Views;
 using RestaurantApp.Dados;
 
@@ -13,6 +8,7 @@ namespace RestaurantApp
     {
         static void Main(string[] args)
         {
+            CarregarDados.IniciandoDados();
             ComandaViews.IniciarComanda();
             ComandaViews.ContinuarComanda();
 
@@ -21,7 +17,6 @@ namespace RestaurantApp
             PedidoViews.RealizarPedido();
             PedidoViews.MostrarPedido();
 
-            DadosLocais.SalvarComandas();
         }
     }
 }
