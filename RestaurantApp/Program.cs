@@ -17,11 +17,7 @@ namespace RestaurantApp
             ProdutosViews.MostrarMenu();
 
             PedidoViews.RealizarPedido();
-            PedidoViews.MostrarPedido();
-
-
-            /*----------------------------*/
-            //SalvarDados.SalvandoDados();
+            PedidoViews.MostrarPedido(ComandaViews.comandaId);
         }
     }
 }

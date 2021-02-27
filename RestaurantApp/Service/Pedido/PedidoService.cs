@@ -55,10 +55,6 @@ namespace RestaurantApp.Service
 
         public static void AtualizarProduto(int pedidoId, int quantidadeItem)
         {
-            var caminhoPedidos = DadosLocais.caminhoPedidos;
-
-            var listaPedidosAtualizada = DadosLocais.listaPedidos;
-
             DadosLocais.listaPedidos.ForEach(x =>
             {
                 if (x.PedidoId == pedidoId)

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using RestaurantApp.Entities;
 using RestaurantApp.Views;
@@ -29,7 +30,7 @@ namespace RestaurantApp.Service
                     ComandaId = x.ComandaId,
                     MesaId = x.MesaId,
                     DataHoraEntrada = x.DataHoraEntrada,
-                    DataHoraSaida = (System.DateTime)x.DataHoraSaida,
+                    DataHoraSaida = (DateTime)x.DataHoraSaida,
                     Valor = x.Valor,
                     ComandaPaga = x.ComandaPaga,
                     QuantidadePessoasNaMesa = x.QuantidadePessoasNaMesa
@@ -50,14 +51,17 @@ namespace RestaurantApp.Service
             DadosLocais.listaComandas.ForEach(x => { 
                 if(x.ComandaId == comandaId)
                 {
-                    DadosLocais.listaComandas.Add(new Comanda()
+                    DadosLocais.listaComandas.ForEach(c =>
                     {
-                        DataHoraSaida = null,
-                        Valor = x.Valor,
-                        ComandaPaga = true
+                        c.DataHoraSaida = DateTime.Now;
+                        c.Valor = x.Valor;
+                        c.ComandaPaga = true;
                     });
                 }
             });
+
+            File.WriteAllText(DadosLocais.caminhoComanda, string.Empty);
+            DadosLocais.SalvarComandas();
         }
     }
 }

@@ -6,11 +6,8 @@ namespace RestaurantApp.Dados
     {
         public static void SalvandoDados()
         {
-            File.WriteAllText(DadosLocais.caminhoComanda, string.Empty);
             File.WriteAllText(DadosLocais.caminhoMesas, string.Empty);
-            DadosLocais.SalvarComandas();
             DadosLocais.SalvarMesa();
-            DadosLocais.SalvarPedidos();
         }
     }
 }

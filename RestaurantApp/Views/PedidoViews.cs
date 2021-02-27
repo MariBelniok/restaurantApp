@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using RestaurantApp.Dados;
 using RestaurantApp.Service;
 
@@ -23,7 +24,7 @@ namespace RestaurantApp.Views
                     var model = new AdicionarModel()
                     {
                         AndamentoDoProduto = 1,
-                        ComandaId = DadosLocais.listaComandas.Count + 1,
+                        ComandaId = ComandaViews.comandaId,
                         ProdutoId = produtoId,
                         QuantidadePorProduto = quantidadeItem,
                         ValorPedido = PedidoService.ValorProduto(produtoId, quantidadeItem)
@@ -38,8 +39,13 @@ namespace RestaurantApp.Views
                 char r = char.Parse(Console.ReadLine());
                 if(r == 's')
                 {
-                    ComandaViews.VisualizarComanda(); 
-                    throw new Exception ("Comanda encerrada com sucesso!");
+                    Console.Clear();
+
+                    DadosLocais.SalvarPedidos();
+                    ComandaService.EncerrarComanda(ComandaViews.comandaId);
+                    ComandaViews.VisualizarComanda(ComandaViews.comandaId);
+
+                    Console.WriteLine("Comanda encerrada com sucesso!");
                 }
                 else
                 {
@@ -50,16 +56,26 @@ namespace RestaurantApp.Views
             }
         }
 
-        public static void MostrarPedido()
+        public static void MostrarPedido(int comandaId)
         {
             DadosLocais.listaPedidos.ForEach(p =>
             {
-                Console.WriteLine("------------------------------------------");
-                Console.WriteLine($"PEDIDO NUMERO:{p.PedidoId} ");
-                Console.WriteLine("------------------------------------------");
-                Console.WriteLine($"Numero Produto: {p.ProdutoId} - Quantidade:{p.QuantidadePorProduto}");
-                Console.WriteLine($"ValorTotal: R${p.ValorPedido:F2}");
-                Console.WriteLine("------------------------------------------");
+                if (p.ComandaId == comandaId)
+                {
+                    DadosLocais.listaProdutos.ForEach(x =>
+                    {
+                        if (p.ProdutoId == x.ProdutoId)
+                        {
+                            Console.WriteLine("------------------------------------------");
+                            Console.WriteLine($"PEDIDO NUMERO:{p.PedidoId}");
+                            Console.WriteLine("");
+                            Console.WriteLine($"Item: {x.NomeProduto}");
+                            Console.WriteLine($"Numero Produto: {p.ProdutoId} - Quantidade:{p.QuantidadePorProduto}");
+                            Console.WriteLine($"ValorTotal: R${p.ValorPedido:F2}");
+                            Console.WriteLine("------------------------------------------");
+                        }
+                    });
+                }
             });
 
             Console.WriteLine("Deseja editar ou cancelar seu pedido? (s/n) ");
@@ -90,7 +106,7 @@ namespace RestaurantApp.Views
                     Console.WriteLine();
                     Console.Clear();
                     Console.WriteLine("Pedido atualizado com sucesso! ");
-                    MostrarPedido();
+                    MostrarPedido(ComandaViews.comandaId);
                 }
             }
             Console.WriteLine("Pedido realizado com sucesso! ");
@@ -102,6 +118,7 @@ namespace RestaurantApp.Views
                 Console.Clear();
                 ProdutosViews.MostrarMenu();
                 RealizarPedido();
+                MostrarPedido(ComandaViews.comandaId);
             }
             else
             {
@@ -109,7 +126,11 @@ namespace RestaurantApp.Views
                 char resposta = char.Parse(Console.ReadLine());
                 if(resposta == 's' || resposta == 'S')
                 {
-                    //ComandaViews.VisualizarComanda();
+                    Console.Clear();
+                    File.WriteAllText(DadosLocais.caminhoPedidos, string.Empty);
+                    DadosLocais.SalvarPedidos();
+                    ComandaService.EncerrarComanda(ComandaViews.comandaId);
+                    ComandaViews.VisualizarComanda(ComandaViews.comandaId);
                 }
             }
         }

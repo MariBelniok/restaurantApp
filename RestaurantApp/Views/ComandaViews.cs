@@ -16,15 +16,28 @@ namespace RestaurantApp.Views
             var mesas = MesaService.ListarMesasDisponiveis();
             foreach (MesaModel mesa in mesas)
             {
-                Console.WriteLine($"{mesa.MesaId}");
+                Console.Write($"[ {mesa.MesaId} ] ");
             }
+            Console.WriteLine();
             Console.Write("Numero da mesa: ");
             int numeroMesa = int.Parse(Console.ReadLine());
-
+            bool mesaDesocupada = MesaService.MesaDesocupada(numeroMesa);
+            if (numeroMesa > 16 || numeroMesa < 1 || !mesaDesocupada){
+                Console.WriteLine("Mesa inexistente ou ocupada! ");
+                Console.Write("Numero da mesa: ");
+                numeroMesa = int.Parse(Console.ReadLine());
+            }
             Console.WriteLine("Quantidade de pessoas: ");
             int qtePessoas = int.Parse(Console.ReadLine());
-
+            if(qtePessoas > 4)
+            {
+                Console.Clear();
+                Console.WriteLine("Maximo de 4 pessoas por mesa! ");
+                Console.WriteLine("Quantidade de pessoas: ");
+                qtePessoas = int.Parse(Console.ReadLine());
+            }
             float valorTotal = (float)qtePessoas * 70;
+            var valorComanda = ComandaService.ValorTotalComanda(valorTotal);
 
             Console.WriteLine("BEM VINDO AO RESTAURANTE SUTEKINA RANCHI");
             if(qtePessoas == 1)
@@ -36,7 +49,6 @@ namespace RestaurantApp.Views
                 Console.WriteLine($"SERAO ADICIONADAS {qtePessoas} PESSOAS AO RODIZIO");
             }
             Console.WriteLine("VALOR DO RODIZIO INDIVIDUAL: R$70,00");
-            var valorComanda = ComandaService.ValorTotalComanda(valorTotal);
             Console.WriteLine($"VALOR TOTAL INICIAL ADICIONADO A COMANDA: R${valorComanda:F2}");
 
             var model = new AddComandaModel()
@@ -48,7 +60,7 @@ namespace RestaurantApp.Views
                 ComandaPaga = false,
                 QuantidadePessoasNaMesa = qtePessoas
             };
-            
+            ComandaService.AddComanda(model);
         }
 
         //VERIFICAR SE REALMENTE DESEJA INICIAR O RODIZIO
@@ -66,7 +78,8 @@ namespace RestaurantApp.Views
                 char cancelarComanda = char.Parse(Console.ReadLine());
                 if (cancelarComanda == 's')
                 {
-                    VisualizarComanda();
+                    ComandaService.EncerrarComanda(comandaId);
+                    VisualizarComanda(comandaId);
                     throw new Exception("COMANDA CANCELADA COM SUCESSO!");
                 }
                 else
@@ -79,9 +92,30 @@ namespace RestaurantApp.Views
             }
         }
 
-        public static void VisualizarComanda()
+        public static void VisualizarComanda(int comandaId)
         {
-            Console.WriteLine($"COMANDA: {comandaId}");
+            var listarComanda = ComandaService.ListarComandas();
+
+            listarComanda.ForEach(x => { 
+                if(x.ComandaId == comandaId)
+                {
+                    Console.WriteLine($"COMANDA: {x.ComandaId}");
+                    Console.WriteLine("-------------------------");
+                    Console.WriteLine("PEDIDOS REALIZADOS: ");
+                        Dados.DadosLocais.listaPedidos.ForEach(p => {
+                        if(p.ComandaId == comandaId)
+                        {
+                            Console.WriteLine($"PEDIDO: " +
+                                $"{p.PedidoId}, " +
+                                $"PRODUTO: {p.ProdutoId}, " +
+                                $"QUANTIDADE: {p.QuantidadePorProduto}, " +
+                                $"VALOR TOTAL PEDIDO: R${p.ValorPedido:F2}, " +
+                                $"STATUS PEDIDO: {p.AndamentoDoPedido}");
+                        }
+                    });
+                    Console.WriteLine("-------------------------");
+                }
+            });
         }
     }
 }

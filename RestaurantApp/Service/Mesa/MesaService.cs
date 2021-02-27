@@ -5,6 +5,21 @@ namespace RestaurantApp.Service
 {
     class MesaService
     {
+        public static bool MesaDesocupada(int mesaId)
+        {
+            bool mesaDisponivel = false;
+            Dados.DadosLocais.listaMesas.ForEach(x => {
+                if (x.MesaId == mesaId)
+                {
+                    if(x.MesaDisponivel == true)
+                    {
+                        mesaDisponivel = true;
+                    }
+                }
+
+            });
+            return mesaDisponivel;
+        }
         public static List<MesaModel> BuscarMesaDisponivel()
         {
             return Dados.DadosLocais.listaMesas
