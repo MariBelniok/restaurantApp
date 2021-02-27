@@ -53,7 +53,35 @@ namespace RestaurantApp.Views
                 }
             }
         }
+        public static void CancelarPedido()
+        {
+            Console.WriteLine("Favor informar o número do pedido que deseja cancelar: ");
+            int pedidoId = int.Parse(Console.ReadLine());
 
+            PedidoService.RemoveProduto(pedidoId);
+
+            Console.WriteLine();
+            Console.WriteLine("Pedido cancelado com sucesso!");
+            Console.WriteLine();
+            ComandaViews.ContinuarComanda();
+            ProdutosViews.MostrarMenu();
+            RealizarPedido();
+        }
+        public static void EditarPedido()
+        {
+            Console.WriteLine("Favor informar o número do pedido que deseja editar: ");
+            int pedidoId = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Quantos desse produto você deseja? ");
+            int quantidadeItem = int.Parse(Console.ReadLine());
+
+            PedidoService.AtualizarProduto(pedidoId, quantidadeItem);
+
+            Console.WriteLine();
+            Console.Clear();
+            Console.WriteLine("Pedido atualizado com sucesso! ");
+            MostrarPedido(ComandaViews.comandaId);
+        }
         public static void MostrarPedido(int comandaId)
         {
             DadosLocais.listaPedidos.ForEach(p =>
@@ -84,41 +112,22 @@ namespace RestaurantApp.Views
                 char res = char.Parse(Console.ReadLine());
                 if (res == 'c' || resp == 'C')
                 {
-                    Console.WriteLine("Favor informar o número do pedido que deseja cancelar: ");
-                    int numeroPedido = int.Parse(Console.ReadLine());
-
-                    PedidoService.RemoveProduto(numeroPedido);
-
-                    Console.WriteLine();
-                    Console.WriteLine("Pedido cancelado com sucesso!");
-                    Console.WriteLine();
-                    ComandaViews.ContinuarComanda();
-                    ProdutosViews.MostrarMenu();
-                    RealizarPedido();
+                    CancelarPedido();
+                }
+                if (res == 'e' || resp == 'E')
+                {
+                    EditarPedido();
                 }
                 else
                 {
-                    Console.WriteLine("Favor informar o número do pedido que deseja editar: ");
-                    int pedidoId = int.Parse(Console.ReadLine());
-                    Console.WriteLine("Quantos desse produto você deseja? ");
-                    int quantidadeItem = int.Parse(Console.ReadLine());
-                    PedidoService.AtualizarProduto(pedidoId, quantidadeItem);
-                    Console.WriteLine();
-                    Console.Clear();
-                    Console.WriteLine("Pedido atualizado com sucesso! ");
-                    MostrarPedido(ComandaViews.comandaId);
+                    Console.WriteLine("Favor informar com (c) para cancelar ou (e) para editar");
+                    res = char.Parse(Console.ReadLine());
                 }
             }
 
             Console.WriteLine("Pedido realizado com sucesso! ");
-            DadosLocais.listaPedidos.ForEach(x =>
-            {
-                if (x.AndamentoDoPedido != 3)
-                { 
-                    PedidoService.AtualizarStatusPedido(x.PedidoId);
-                }
-                
-            });
+
+
             Console.WriteLine();
             Console.WriteLine("Fazer novo pedido? (s/n)");
             char r = char.Parse(Console.ReadLine());

@@ -32,13 +32,12 @@ namespace RestaurantApp.Views
             {
                 Console.WriteLine("Mesa inexistente ou ocupada! ");
                 Console.Write("Numero da mesa: ");
-                numeroMesa = int.Parse(Console.ReadLine());
+                numeroMesa = int.Parse(Console.ReadLine());    
             }
-
 
             Console.WriteLine("Quantidade de pessoas: ");
             int qtePessoas = int.Parse(Console.ReadLine());
-            if (qtePessoas > 4)
+            while (qtePessoas > 4)
             {
                 Console.Clear();
                 Console.WriteLine("Maximo de 4 pessoas por mesa! ");
@@ -86,7 +85,7 @@ namespace RestaurantApp.Views
                 char cancelarComanda = char.Parse(Console.ReadLine());
                 if (cancelarComanda == 's')
                 {
-                    ComandaService.EncerrarComanda(comandaId);
+                    ComandaService.CancelarComanda(comandaId);
                     VisualizarComanda(comandaId);
                     throw new Exception("COMANDA CANCELADA COM SUCESSO!");
                 }
@@ -142,7 +141,7 @@ namespace RestaurantApp.Views
                                     Console.WriteLine($"VALOR ITEM: {z.ValorProduto}, ");
                                     Console.WriteLine($"QUANTIDADE: {p.QuantidadePorProduto}, ");
                                     Console.WriteLine($"VALOR TOTAL PEDIDO: R${p.ValorPedido:F2}, ");
-                                    if(p.AndamentoDoPedido == 2)
+                                    if(p.AndamentoDoPedido == 2 || p.AndamentoDoPedido == 1)
                                     {
                                         Console.WriteLine($"STATUS PEDIDO: ENTREGUE");
                                         valorTotalComanda += p.ValorPedido;

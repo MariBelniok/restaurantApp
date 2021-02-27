@@ -10,15 +10,15 @@ namespace RestaurantApp
         {
             CarregarDados.IniciandoDados();
             /*----------------------------*/
-            //ComandaViews.VisualizarComanda(1);
+            ComandaViews.VisualizarComanda(3);
 
-            ComandaViews.IniciarComanda();
+            /*ComandaViews.IniciarComanda();
             ComandaViews.ContinuarComanda();
 
             ProdutosViews.MostrarMenu();
 
             PedidoViews.RealizarPedido();
-            PedidoViews.MostrarPedido(ComandaViews.comandaId);
+            PedidoViews.MostrarPedido(ComandaViews.comandaId);*/
         }
     }
 }

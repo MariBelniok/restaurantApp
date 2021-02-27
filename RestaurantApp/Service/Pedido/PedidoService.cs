@@ -46,12 +46,9 @@ namespace RestaurantApp.Service
         {
             DadosLocais.listaPedidos.ForEach(x =>
             {
-                if (x.PedidoId == pedidoId && x.AndamentoDoPedido == 1)
+                if (x.PedidoId == pedidoId)
                 {
-                    DadosLocais.listaPedidos.ForEach(p =>
-                    {
-                        p.AndamentoDoPedido = 3;
-                    });
+                    x.AndamentoDoPedido = 2;
                 }
             });
         }
@@ -66,19 +63,6 @@ namespace RestaurantApp.Service
                     {
                         p.QuantidadePorProduto = quantidadeItem;
                         p.ValorPedido = ValorProduto(p.ProdutoId, quantidadeItem);
-                    });
-                }
-            });
-        }
-        public static void AtualizarStatusPedido(int pedidoId)
-        {
-            DadosLocais.listaPedidos.ForEach(x =>
-            {
-                if (x.PedidoId == pedidoId)
-                {
-                    DadosLocais.listaPedidos.ForEach(p =>
-                    {
-                        p.AndamentoDoPedido = 2;
                     });
                 }
             });

@@ -2,7 +2,6 @@
 using System.IO;
 using System.Collections.Generic;
 using RestaurantApp.Entities;
-using RestaurantApp.Views;
 using RestaurantApp.Dados;
 
 namespace RestaurantApp.Service
@@ -61,7 +60,23 @@ namespace RestaurantApp.Service
             });
             return valorTotalComanda;
         }
+        public static void CancelarComanda(int comandaId)
+        {
+            DadosLocais.listaComandas.ForEach(x => {
+                if (x.ComandaId == comandaId)
+                {
+                    DadosLocais.listaComandas.ForEach(c =>
+                    {
+                        c.DataHoraSaida = DateTime.Now;
+                        c.Valor = (x.Valor) * 0;
+                        c.ComandaPaga = true;
+                    });
+                }
+            });
 
+            File.WriteAllText(DadosLocais.caminhoComanda, string.Empty);
+            DadosLocais.SalvarComandas();
+        }
         public static void EncerrarComanda(int comandaId)
         {
             DadosLocais.listaComandas.ForEach(x => { 
