@@ -8,7 +8,7 @@ using RestaurantApp.Dados;
 namespace RestaurantApp.Service
 {
     class ComandaService
-    {   
+    {
         public static void AddComanda(AddComandaModel model)
         {
             DadosLocais.listaComandas.Add(new Comanda() { 
@@ -39,11 +39,27 @@ namespace RestaurantApp.Service
             });
             return comandas;
         }
-        public static float ValorTotalComanda(float valor)
+        public static float ValorTotalComanda(int comandaId)
         {
-            float sum = 0;
-            sum += valor;
-            return sum;
+            var listarComanda = ListarComandas();
+
+            float valorTotalComanda = 0;
+
+            listarComanda.ForEach(x =>
+            {
+                if (x.ComandaId == comandaId)
+                { 
+                    DadosLocais.listaPedidos.ForEach(p =>
+                    {
+                        if (p.ComandaId == comandaId)
+                        {
+                            valorTotalComanda += p.ValorPedido;    
+                        }
+                    });
+                }
+                valorTotalComanda += x.Valor;
+            });
+            return valorTotalComanda;
         }
 
         public static void EncerrarComanda(int comandaId)

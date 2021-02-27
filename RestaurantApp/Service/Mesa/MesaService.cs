@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using RestaurantApp.Dados;
 
 namespace RestaurantApp.Service
 {
@@ -19,6 +21,21 @@ namespace RestaurantApp.Service
 
             });
             return mesaDisponivel;
+        }
+        public static void AtualizarStatusMesa(int mesaId)
+        {
+            Dados.DadosLocais.listaMesas.ForEach(m =>
+            {
+                if(mesaId == m.MesaId)
+                {
+                    Dados.DadosLocais.listaMesas.ForEach(x =>
+                    {
+                        x.MesaDisponivel = false;
+                    });
+                }
+            });
+            File.WriteAllText(DadosLocais.caminhoMesas, string.Empty);
+            DadosLocais.SalvarMesa();
         }
         public static List<MesaModel> BuscarMesaDisponivel()
         {

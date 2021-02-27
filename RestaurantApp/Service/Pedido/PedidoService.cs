@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using System.Globalization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using RestaurantApp.Entities;
@@ -76,7 +76,7 @@ namespace RestaurantApp.Service
                     sum += (x.ValorProduto * (float)quantidade);
                 }
             });
-            ComandaService.ValorTotalComanda(sum);
+
             return sum;
 
         }
