@@ -70,5 +70,10 @@ namespace RestaurantApp.Views
                 }
             }
         }
+
+        /*public static void VisualizarComanda()
+        {
+            Console.WriteLine(ComandaService.TrazerComanda());
+        }*/
     }
 }

@@ -14,6 +14,7 @@ namespace RestaurantApp.Views
 
             for (int i = 1; i <= numeroItems; i++)
             {
+                Console.WriteLine($"{i}º PEDIDO: ");
                 Console.WriteLine("Favor informar o número do item desejado: ");
                 int produtoId = int.Parse(Console.ReadLine());
                 Console.WriteLine("Quantos desse produto você deseja? ");
@@ -26,10 +27,7 @@ namespace RestaurantApp.Views
                     QuantidadePorProduto = quantidadeItem,
                     ValorPedido = PedidoService.ValorProduto(produtoId, quantidadeItem)
                 };
-
                 PedidoService.AddPedido(model);
-
-                Console.Clear();
             }
         }
 
@@ -50,8 +48,8 @@ namespace RestaurantApp.Views
             if(resp == 's' || resp == 'S')
             {
                 Console.WriteLine("Favor informar com (c) para cancelar ou (e) para editar");
-                char r = char.Parse(Console.ReadLine());
-                if(r == 'c')
+                char res = char.Parse(Console.ReadLine());
+                if(res == 'c' || resp == 'C')
                 {
                     Console.WriteLine("Favor informar o número do pedido que deseja cancelar: ");
                     int pedidoId = int.Parse(Console.ReadLine());
@@ -76,9 +74,24 @@ namespace RestaurantApp.Views
                     MostrarPedido();
                 }
             }
+            Console.Clear();
             Console.WriteLine("Pedido realizado com sucesso! ");
             Console.WriteLine();
             Console.WriteLine("Fazer novo pedido? (s/n)");
+            char r = char.Parse(Console.ReadLine());
+            if(r == 's' || r == 'S')
+            {
+                RealizarPedido();
+            }
+            else
+            {
+                Console.WriteLine("Finalizar atendimento e pagar comanda? (s/n)");
+                char resposta = char.Parse(Console.ReadLine());
+                if(resposta == 's' || resposta == 'S')
+                {
+                    //ComandaViews.VisualizarComanda();
+                }
+            }
         }
     }
 }
