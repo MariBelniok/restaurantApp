@@ -10,7 +10,7 @@ namespace RestaurantApp
         {
             CarregarDados.IniciandoDados();
             /*----------------------------*/
-            //ComandaViews.VisualizarComanda(2);
+            //ComandaViews.VisualizarComanda(1);
 
             ComandaViews.IniciarComanda();
             ComandaViews.ContinuarComanda();

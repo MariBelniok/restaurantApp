@@ -10,34 +10,33 @@ namespace RestaurantApp.Views
         public static void RealizarPedido()
         {
             Console.WriteLine("Favor realizar seu pedido.");
-            Console.WriteLine("Quantos items do menu deseja pedir? ");
-            int numeroItems = int.Parse(Console.ReadLine());
-            if (numeroItems > 0)
+            Console.WriteLine("Novo Pedido?(s/n) ");
+            char resposta = char.Parse(Console.ReadLine());
+            if (resposta == 's')
             {
-                for (int i = 1; i <= numeroItems; i++)
+
+                Console.WriteLine($"PEDIDO: ");
+                Console.WriteLine("Favor informar o número do item desejado: ");
+                int produtoId = int.Parse(Console.ReadLine());
+                Console.WriteLine("Quantos desse produto você deseja? ");
+                int quantidadeItem = int.Parse(Console.ReadLine());
+                var model = new AdicionarModel()
                 {
-                    Console.WriteLine($"{i}º PEDIDO: ");
-                    Console.WriteLine("Favor informar o número do item desejado: ");
-                    int produtoId = int.Parse(Console.ReadLine());
-                    Console.WriteLine("Quantos desse produto você deseja? ");
-                    int quantidadeItem = int.Parse(Console.ReadLine());
-                    var model = new AdicionarModel()
-                    {
-                        AndamentoDoProduto = 1,
-                        ComandaId = ComandaViews.comandaId,
-                        ProdutoId = produtoId,
-                        QuantidadePorProduto = quantidadeItem,
-                        ValorPedido = PedidoService.ValorProduto(produtoId, quantidadeItem)
-                    };
-                    PedidoService.AddPedido(model);
-                }
+                    AndamentoDoProduto = 1,
+                    ComandaId = ComandaViews.comandaId,
+                    ProdutoId = produtoId,
+                    QuantidadePorProduto = quantidadeItem,
+                    ValorPedido = PedidoService.ValorProduto(produtoId, quantidadeItem)
+                };
+                PedidoService.AddPedido(model);
+
                 Console.Clear();
             }
             else
             {
                 Console.WriteLine("Deseja encerrar atendimento e pagar sua comanda? (s/n)");
                 char r = char.Parse(Console.ReadLine());
-                if(r == 's')
+                if (r == 's')
                 {
                     Console.Clear();
 
@@ -49,9 +48,8 @@ namespace RestaurantApp.Views
                 }
                 else
                 {
-                    Console.WriteLine("Favor realizar seu pedido.");
-                    Console.WriteLine("Quantos items do menu deseja pedir? ");
-                    numeroItems = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Novo Pedido?(s/n) ");
+                    resposta = char.Parse(Console.ReadLine());
                 }
             }
         }
@@ -80,15 +78,17 @@ namespace RestaurantApp.Views
 
             Console.WriteLine("Deseja editar ou cancelar seu pedido? (s/n) ");
             char resp = char.Parse(Console.ReadLine());
-            if(resp == 's' || resp == 'S')
+            if (resp == 's' || resp == 'S')
             {
                 Console.WriteLine("Favor informar com (c) para cancelar ou (e) para editar");
                 char res = char.Parse(Console.ReadLine());
-                if(res == 'c' || resp == 'C')
+                if (res == 'c' || resp == 'C')
                 {
                     Console.WriteLine("Favor informar o número do pedido que deseja cancelar: ");
-                    int pedidoId = int.Parse(Console.ReadLine());
-                    PedidoService.RemoveProduto(pedidoId);
+                    int numeroPedido = int.Parse(Console.ReadLine());
+
+                    PedidoService.RemoveProduto(numeroPedido);
+
                     Console.WriteLine();
                     Console.WriteLine("Pedido cancelado com sucesso!");
                     Console.WriteLine();
@@ -109,11 +109,20 @@ namespace RestaurantApp.Views
                     MostrarPedido(ComandaViews.comandaId);
                 }
             }
+
             Console.WriteLine("Pedido realizado com sucesso! ");
+            DadosLocais.listaPedidos.ForEach(x =>
+            {
+                if (x.AndamentoDoPedido != 3)
+                { 
+                    PedidoService.AtualizarStatusPedido(x.PedidoId);
+                }
+                
+            });
             Console.WriteLine();
             Console.WriteLine("Fazer novo pedido? (s/n)");
             char r = char.Parse(Console.ReadLine());
-            if(r == 's' || r == 'S')
+            if (r == 's' || r == 'S')
             {
                 Console.Clear();
                 ProdutosViews.MostrarMenu();
@@ -124,7 +133,7 @@ namespace RestaurantApp.Views
             {
                 Console.WriteLine("Finalizar atendimento e pagar comanda? (s/n)");
                 char resposta = char.Parse(Console.ReadLine());
-                if(resposta == 's' || resposta == 'S')
+                if (resposta == 's' || resposta == 'S')
                 {
                     Console.Clear();
                     File.WriteAllText(DadosLocais.caminhoPedidos, string.Empty);

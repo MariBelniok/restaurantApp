@@ -34,6 +34,8 @@ namespace RestaurantApp.Views
                 Console.Write("Numero da mesa: ");
                 numeroMesa = int.Parse(Console.ReadLine());
             }
+
+
             Console.WriteLine("Quantidade de pessoas: ");
             int qtePessoas = int.Parse(Console.ReadLine());
             if (qtePessoas > 4)
@@ -140,9 +142,16 @@ namespace RestaurantApp.Views
                                     Console.WriteLine($"VALOR ITEM: {z.ValorProduto}, ");
                                     Console.WriteLine($"QUANTIDADE: {p.QuantidadePorProduto}, ");
                                     Console.WriteLine($"VALOR TOTAL PEDIDO: R${p.ValorPedido:F2}, ");
-                                    Console.WriteLine($"STATUS PEDIDO: {p.AndamentoDoPedido}");
+                                    if(p.AndamentoDoPedido == 2)
+                                    {
+                                        Console.WriteLine($"STATUS PEDIDO: ENTREGUE");
+                                        valorTotalComanda += p.ValorPedido;
+                                    }
+                                    if(p.AndamentoDoPedido == 3)
+                                    {
+                                        Console.WriteLine($"STATUS PEDIDO: CANCELADO");
+                                    }
                                     Console.WriteLine();
-                                    valorTotalComanda += p.ValorPedido;
                                 }
                             });
                         }

@@ -164,12 +164,12 @@ namespace RestaurantApp.Dados
 
         public static void SalvarMesa()
         {
-            using (StreamWriter sw = File.AppendText(caminhoPedidos))
+            using (StreamWriter sw = File.AppendText(caminhoMesas))
             {
                 listaMesas.ForEach(m =>
                 {
-                    var pedidos = (string.Join(',', m.MesaId, m.CapacidadePorMesa, m.MesaDisponivel));
-                    sw.WriteLine(pedidos);
+                    var mesas = (string.Join(',', m.MesaId, m.CapacidadePorMesa, m.MesaDisponivel));
+                    sw.WriteLine(mesas);
                 });
             }
         }

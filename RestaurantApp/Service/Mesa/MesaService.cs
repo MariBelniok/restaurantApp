@@ -10,15 +10,11 @@ namespace RestaurantApp.Service
         public static bool MesaDesocupada(int mesaId)
         {
             bool mesaDisponivel = false;
-            Dados.DadosLocais.listaMesas.ForEach(x => {
-                if (x.MesaId == mesaId)
+            DadosLocais.listaMesas.ForEach(x => {
+                if (x.MesaId == mesaId && x.MesaDisponivel == true)
                 {
-                    if(x.MesaDisponivel == true)
-                    {
-                        mesaDisponivel = true;
-                    }
+                     mesaDisponivel = true;
                 }
-
             });
             return mesaDisponivel;
         }
@@ -34,8 +30,8 @@ namespace RestaurantApp.Service
                     });
                 }
             });
-            File.WriteAllText(DadosLocais.caminhoMesas, string.Empty);
-            DadosLocais.SalvarMesa();
+            //File.WriteAllText(DadosLocais.caminhoMesas, string.Empty);
+            //DadosLocais.SalvarMesa();
         }
         public static List<MesaModel> BuscarMesaDisponivel()
         {
