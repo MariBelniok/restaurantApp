@@ -10,15 +10,34 @@ namespace RestaurantApp.Service
 {
     class PedidoService
     {
-        public static float ValorTotalPedido = 0;
+        public static List<PedidoModel> ListarPedidos()
+        {
+            var pedidos = new List<PedidoModel>();
+            DadosLocais.listaPedidos.ForEach(x =>
+            {
+                var pedido = new PedidoModel()
+                {
+                    PedidoId = x.PedidoId,
+                    ProdutoId = x.ProdutoId,
+                    ComandaId = x.ComandaId,
+                    QuantidadePorProduto = x.AndamentoDoPedido,
+                    ValorPedido = x.ValorPedido,
+                    AndamentoDoProduto = x.AndamentoDoPedido
+                };
+                pedidos.Add(pedido);
+            });
+
+            return pedidos;
+        }
         public static void AddPedido(AdicionarModel model)
         {
             DadosLocais.listaPedidos.Add(new Pedido()
             {
-                PedidoId = DadosLocais.listaStatusPedidos.Count + 1,
+                PedidoId = DadosLocais.listaPedidos.Count + 1,
                 ComandaId = model.ComandaId,
                 ProdutoId = model.ProdutoId,
                 QuantidadePorProduto = model.QuantidadePorProduto,
+                ValorPedido = model.ValorPedido,
                 AndamentoDoPedido = model.AndamentoDoProduto
             });
         }
@@ -47,20 +66,21 @@ namespace RestaurantApp.Service
                     DadosLocais.listaPedidos.ForEach(p =>
                     {
                         p.QuantidadePorProduto = quantidadeItem;
+                        p.ValorPedido = ValorProduto(p.ProdutoId, quantidadeItem);
                     });
                 }
-
             });
         }
-
-        public static float SomarProdutos(float valor, int quantidade)
+        public static float ValorProduto(int prodId, int quantidade)
         {
-            return ValorTotalPedido += (valor * quantidade);
-        }
-
-        public static float DiminuirProduto(float valor, int quantidade)
-        {
-            return ValorTotalPedido -= (valor * quantidade);
+            float sum = 0;
+            DadosLocais.listaProdutos.ForEach(x => {
+                if (x.ProdutoId == prodId)
+                {
+                    sum += (x.ValorProduto * (float)quantidade);
+                }
+            });
+            return sum;
         }
     }
 }

@@ -2,12 +2,13 @@
 
 namespace RestaurantApp.Service
 {
-    class PedidoModel
+    public class PedidoModel
     {
-        public int PedidoId { get; private set; }
-        public int ComandaId { get; private set; }
+        public int PedidoId { get; set; }
+        public int ComandaId { get; set; }
         public int ProdutoId { get; set; }
         public int QuantidadePorProduto { get; set; }
+        public float ValorPedido { get; set; }
         public int AndamentoDoProduto { get; set; }
     }
 }

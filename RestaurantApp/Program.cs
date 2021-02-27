@@ -21,7 +21,7 @@ namespace RestaurantApp
 
 
             /*----------------------------*/
-            SalvarDados.SalvandoDados();
+            //SalvarDados.SalvandoDados();
         }
     }
 }

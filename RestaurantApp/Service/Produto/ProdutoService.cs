@@ -25,7 +25,7 @@ namespace RestaurantApp.Service
         public static List<ProdutoModel> ListarProdutos()
         {
             List<ProdutoModel> produtos = new List<ProdutoModel>();
-            Dados.DadosLocais.listaProdutos.ForEach(x =>
+            BuscarProdutoDisponivel().ForEach(x =>
             {
                 var prod = new ProdutoModel()
                 {

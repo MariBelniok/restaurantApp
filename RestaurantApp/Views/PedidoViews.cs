@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using RestaurantApp.Dados;
 using RestaurantApp.Service;
 
 namespace RestaurantApp.Views
@@ -22,23 +21,64 @@ namespace RestaurantApp.Views
                 var model = new AdicionarModel()
                 {
                     AndamentoDoProduto = 1,
-                    ComandaId = Dados.DadosLocais.listaComandas.Count+1,
+                    ComandaId = DadosLocais.listaComandas.Count + 1,
                     ProdutoId = produtoId,
-                    QuantidadePorProduto = quantidadeItem
+                    QuantidadePorProduto = quantidadeItem,
+                    ValorPedido = PedidoService.ValorProduto(produtoId, quantidadeItem)
                 };
 
                 PedidoService.AddPedido(model);
+
+                Console.Clear();
             }
         }
 
         public static void MostrarPedido()
         {
-            Console.WriteLine("PEDIDO: ");
-            Dados.DadosLocais.listaPedidos.ForEach(p => {
-                Console.WriteLine( $"{p.PedidoId}, {p.QuantidadePorProduto}");
+            DadosLocais.listaPedidos.ForEach(p =>
+            {
+                Console.WriteLine("------------------------------------------");
+                Console.WriteLine($"PEDIDO NUMERO:{p.PedidoId} ");
+                Console.WriteLine("------------------------------------------");
+                Console.WriteLine($"Numero Produto: {p.ProdutoId} - Quantidade:{p.QuantidadePorProduto}");
+                Console.WriteLine($"ValorTotal: R${p.ValorPedido:F2}");
+                Console.WriteLine("------------------------------------------");
             });
-            
-            ComandaService.TrazerComanda(Dados.DadosLocais.listaComandas.Count + 1);
+
+            Console.WriteLine("Deseja editar ou cancelar seu pedido? (s/n) ");
+            char resp = char.Parse(Console.ReadLine());
+            if(resp == 's' || resp == 'S')
+            {
+                Console.WriteLine("Favor informar com (c) para cancelar ou (e) para editar");
+                char r = char.Parse(Console.ReadLine());
+                if(r == 'c')
+                {
+                    Console.WriteLine("Favor informar o número do pedido que deseja cancelar: ");
+                    int pedidoId = int.Parse(Console.ReadLine());
+                    PedidoService.RemoveProduto(pedidoId);
+                    Console.WriteLine();
+                    Console.WriteLine("Pedido cancelado com sucesso!");
+                    Console.WriteLine();
+                    ComandaViews.ContinuarComanda();
+                    Console.Clear();
+                    ProdutosViews.MostrarMenu();
+                    RealizarPedido();
+                }
+                else
+                {
+                    Console.WriteLine("Favor informar o número do pedido que deseja editar: ");
+                    int pedidoId = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Quantos desse produto você deseja? ");
+                    int quantidadeItem = int.Parse(Console.ReadLine());
+                    PedidoService.AtualizarProduto(pedidoId, quantidadeItem);
+                    Console.WriteLine();
+                    Console.WriteLine("Pedido atualizado com sucesso! ");
+                    MostrarPedido();
+                }
+            }
+            Console.WriteLine("Pedido realizado com sucesso! ");
+            Console.WriteLine();
+            Console.WriteLine("Fazer novo pedido? (s/n)");
         }
     }
 }

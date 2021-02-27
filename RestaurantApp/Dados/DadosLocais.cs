@@ -10,11 +10,11 @@ namespace RestaurantApp.Dados
 {
     public class DadosLocais
     {
-        public static string caminhoPedidos = @"C:\Users\marianna.belniok\source\repos\RestaurantApp\RestaurantApp\Dados\Pedidos.csv";
-        public static string caminhoComanda = @"C:\Users\marianna.belniok\source\repos\RestaurantApp\RestaurantApp\Dados\Comandas.csv";
-        public static string caminhoProdutos = @"C:\Users\marianna.belniok\source\repos\RestaurantApp\RestaurantApp\Dados\MenuProdutos.csv";
-        public static string caminhoMesas = @"C:\Users\marianna.belniok\source\repos\RestaurantApp\RestaurantApp\Dados\DadosMesa.csv";
-        public static string caminhoStatus = @"C:\Users\marianna.belniok\source\repos\RestaurantApp\RestaurantApp\Dados\StatusPedido.csv";
+        public static string caminhoPedidos = @"C:\Users\Dell\Desktop\restaurantApp\RestaurantApp\Dados\Pedidos.csv";
+        public static string caminhoComanda = @"C:\Users\Dell\Desktop\restaurantApp\RestaurantApp\Dados\Comandas.csv";
+        public static string caminhoProdutos = @"C:\Users\Dell\Desktop\restaurantApp\RestaurantApp\Dados\MenuProdutos.csv";
+        public static string caminhoMesas = @"C:\Users\Dell\Desktop\restaurantApp\RestaurantApp\Dados\DadosMesa.csv";
+        public static string caminhoStatus = @"C:\Users\Dell\Desktop\restaurantApp\RestaurantApp\Dados\StatusPedido.csv";
 
         public static List<Comanda> listaComandas = new List<Comanda>();
         public static List<Produto> listaProdutos = new List<Produto>();
@@ -103,7 +103,8 @@ namespace RestaurantApp.Dados
                 int comandaId = int.Parse(dadosDoPedido[1]);
                 int produtoId = int.Parse(dadosDoPedido[2]);
                 int quantidadePorProduto = int.Parse(dadosDoPedido[3]);
-                int andamentoDoPedido = int.Parse(dadosDoPedido[4]);
+                float valorPedido = float.Parse(dadosDoPedido[4], CultureInfo.InvariantCulture);
+                int andamentoDoPedido = int.Parse(dadosDoPedido[5]);
 
                 listaPedidos.Add(new Pedido
                 {
@@ -111,6 +112,7 @@ namespace RestaurantApp.Dados
                     ComandaId = comandaId,
                     ProdutoId = produtoId,
                     QuantidadePorProduto = quantidadePorProduto,
+                    ValorPedido = valorPedido,
                     AndamentoDoPedido = andamentoDoPedido
                 });
             }
@@ -154,8 +156,8 @@ namespace RestaurantApp.Dados
             {
                 listaPedidos.ForEach(p =>
                 {
-                    var pedidos = (string.Join(',', p.PedidoId, p.ComandaId, p.ProdutoId, p.QuantidadePorProduto, p.AndamentoDoPedido));
-                    sw.WriteLine(p);
+                    var pedidos = (string.Join(',', p.PedidoId, p.ComandaId, p.ProdutoId, p.QuantidadePorProduto, p.ValorPedido, p.AndamentoDoPedido));
+                    sw.WriteLine(pedidos);
                 });
             }
         }
