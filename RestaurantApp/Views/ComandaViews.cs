@@ -1,17 +1,16 @@
-﻿using RestaurantApp.Entities;
-using RestaurantApp.Service;
+﻿using RestaurantApp.Service;
 using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace RestaurantApp.Views
 {
     class ComandaViews
     {
+        public static int comandaId = Dados.DadosLocais.listaComandas.Count + 1;
         //PEDIR DADOS DA COMANDA
         public static void IniciarComanda()
         {
-            Console.Write($"Numero da comanda: {Dados.DadosLocais.listaComandas.Count + 1}");
+            Console.Write($"Numero da comanda: {comandaId}");
             Console.WriteLine();
             Console.WriteLine("Mesas disponiveis: ");
             var mesas = MesaService.ListarMesasDisponiveis();
@@ -40,7 +39,15 @@ namespace RestaurantApp.Views
             var valorComanda = ComandaService.ValorTotalComanda(valorTotal);
             Console.WriteLine($"VALOR TOTAL INICIAL ADICIONADO A COMANDA: R${valorComanda:F2}");
 
-            ComandaService.AddComanda(numeroMesa);
+            var model = new AddComandaModel()
+            {
+                ComandaId = comandaId,
+                MesaId = numeroMesa,
+                DataHoraEntrada = DateTime.Now,
+                Valor = valorComanda,
+                ComandaPaga = false,
+                QuantidadePessoasNaMesa = qtePessoas
+            };
             
         }
 
@@ -59,6 +66,7 @@ namespace RestaurantApp.Views
                 char cancelarComanda = char.Parse(Console.ReadLine());
                 if (cancelarComanda == 's')
                 {
+                    VisualizarComanda();
                     throw new Exception("COMANDA CANCELADA COM SUCESSO!");
                 }
                 else
@@ -71,9 +79,9 @@ namespace RestaurantApp.Views
             }
         }
 
-        /*public static void VisualizarComanda()
+        public static void VisualizarComanda()
         {
-            Console.WriteLine(ComandaService.TrazerComanda());
-        }*/
+            Console.WriteLine($"COMANDA: {comandaId}");
+        }
     }
 }

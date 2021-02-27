@@ -39,7 +39,7 @@ namespace RestaurantApp.Service
                 QuantidadePorProduto = model.QuantidadePorProduto,
                 ValorPedido = model.ValorPedido,
                 AndamentoDoPedido = model.AndamentoDoProduto
-            });
+            });;
         }
 
         public static void RemoveProduto(int pedidoId)
@@ -80,7 +80,9 @@ namespace RestaurantApp.Service
                     sum += (x.ValorProduto * (float)quantidade);
                 }
             });
+            ComandaService.ValorTotalComanda(sum);
             return sum;
+
         }
     }
 }

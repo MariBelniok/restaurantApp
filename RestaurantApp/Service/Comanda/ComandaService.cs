@@ -7,45 +7,57 @@ using RestaurantApp.Dados;
 namespace RestaurantApp.Service
 {
     class ComandaService
-    {
-        public static List<Comanda> novaComanda = new List<Comanda>();
-        public static List<ComandaModel> comandas = new List<ComandaModel>();
-        
-        public static void AddComanda(int mesa)
+    {   
+        public static void AddComanda(AddComandaModel model)
         {
-            
+            DadosLocais.listaComandas.Add(new Comanda() { 
+                ComandaId = model.ComandaId,
+                MesaId = model.MesaId,
+                DataHoraEntrada = model.DataHoraEntrada,
+                DataHoraSaida = null,
+                Valor = model.Valor,
+                ComandaPaga = model.ComandaPaga,
+                QuantidadePessoasNaMesa = model.QuantidadePessoasNaMesa
+            });
         }
-        public static void ListarComandas()
+        public static List<ComandaModel> ListarComandas()
         {
-            
-        }
-
-        public static string TrazerComanda(int comandaId)
-        {
-            string dadosComanda = "";
-
-            DadosLocais.listaComandas
-                .ForEach(x =>
+            var comandas = new List<ComandaModel>();
+            DadosLocais.listaComandas.ForEach(x => {
+                var comanda = new ComandaModel()
                 {
-                    if (x.ComandaId == comandaId)
-                    {
-                        dadosComanda = $"Comanda: {x.ComandaId}," +
-                               $"Mesa: {x.MesaId}" +
-                               $"Horario do inicio da comanda: {x.MesaId}" +
-                               $"Horario do fechamento da comanda: {x.MesaId}" +
-                               $"Valor total da comanda: {x.Valor}" +
-                               $"";
-                    }
-                });
-
-            return dadosComanda;
+                    ComandaId = x.ComandaId,
+                    MesaId = x.MesaId,
+                    DataHoraEntrada = x.DataHoraEntrada,
+                    DataHoraSaida = (System.DateTime)x.DataHoraSaida,
+                    Valor = x.Valor,
+                    ComandaPaga = x.ComandaPaga,
+                    QuantidadePessoasNaMesa = x.QuantidadePessoasNaMesa
+                };
+                comandas.Add(comanda);
+            });
+            return comandas;
         }
-
         public static float ValorTotalComanda(float valor)
         {
             float sum = 0;
             sum += valor;
             return sum;
+        }
+
+        public static void EncerrarComanda(int comandaId)
+        {
+            DadosLocais.listaComandas.ForEach(x => { 
+                if(x.ComandaId == comandaId)
+                {
+                    DadosLocais.listaComandas.Add(new Comanda()
+                    {
+                        DataHoraSaida = null,
+                        Valor = x.Valor,
+                        ComandaPaga = true
+                    });
+                }
+            });
         }
     }
 }
