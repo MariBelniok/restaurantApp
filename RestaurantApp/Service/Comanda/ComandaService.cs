@@ -41,22 +41,31 @@ namespace RestaurantApp.Service
         public static float ValorTotalComanda(int comandaId)
         {
             var listarComanda = ListarComandas();
-
             float valorTotalComanda = 0;
 
             listarComanda.ForEach(x =>
             {
                 if (x.ComandaId == comandaId)
-                { 
+                {
                     DadosLocais.listaPedidos.ForEach(p =>
                     {
                         if (p.ComandaId == comandaId)
                         {
-                            valorTotalComanda += p.ValorPedido;    
+                            DadosLocais.listaProdutos.ForEach(z =>
+                            {
+                                if (z.ProdutoId == p.ProdutoId)
+                                {
+                                    
+                                    if (p.AndamentoDoPedido == 1)
+                                    {
+                                        valorTotalComanda += p.ValorPedido;
+                                    }
+                                }
+                            });
                         }
                     });
+                    valorTotalComanda += x.Valor;
                 }
-                valorTotalComanda += x.Valor;
             });
             return valorTotalComanda;
         }
@@ -74,6 +83,7 @@ namespace RestaurantApp.Service
                 }
             });
 
+            MesaService.AtualizarStatusMesa(comandaId);
             File.WriteAllText(DadosLocais.caminhoComanda, string.Empty);
             DadosLocais.SalvarComandas();
         }
@@ -89,10 +99,17 @@ namespace RestaurantApp.Service
                         c.ComandaPaga = true;
                     });
                 }
+                MesaService.AtualizarStatusMesa(comandaId);
             });
 
             File.WriteAllText(DadosLocais.caminhoComanda, string.Empty);
             DadosLocais.SalvarComandas();
+
+            Console.WriteLine();
+            Console.WriteLine("---------------------------");
+            Console.WriteLine("|Comanda paga com sucesso!|");
+            Console.WriteLine("---------------------------");
+            Console.WriteLine();
         }
     }
 }

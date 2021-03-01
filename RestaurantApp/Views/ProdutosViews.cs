@@ -1,15 +1,13 @@
 ﻿using RestaurantApp.Service;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 
 namespace RestaurantApp.Views
 {
     class ProdutosViews
     {
+        //MOSTRAR MENU
         public static void MostrarMenu()
         {
-            //MOSTRAR MENU
             Console.WriteLine();
             Console.WriteLine("------------------------------------------");
             Console.WriteLine("MENU: ");
@@ -25,7 +23,6 @@ namespace RestaurantApp.Views
                 {
                     Console.WriteLine($"{p.ProdutoId} - {p.NomeProduto} - R${p.ValorProduto:F2}");
                 }
-                
             }
             Console.WriteLine("------------------------------------------");
             Console.WriteLine();

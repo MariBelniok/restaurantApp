@@ -39,7 +39,7 @@ namespace RestaurantApp.Service
                 QuantidadePorProduto = model.QuantidadePorProduto,
                 ValorPedido = model.ValorPedido,
                 AndamentoDoPedido = model.AndamentoDoProduto
-            });;
+            }); ;
         }
 
         public static void RemoveProduto(int pedidoId)
@@ -70,7 +70,8 @@ namespace RestaurantApp.Service
         public static float ValorProduto(int prodId, int quantidade)
         {
             float sum = 0;
-            DadosLocais.listaProdutos.ForEach(x => {
+            DadosLocais.listaProdutos.ForEach(x =>
+            {
                 if (x.ProdutoId == prodId)
                 {
                     sum += (x.ValorProduto * (float)quantidade);
@@ -79,6 +80,22 @@ namespace RestaurantApp.Service
 
             return sum;
 
+        }
+
+        //VERFICA SE O PEDIDO PODE SER CANCELADO OU EDITADO
+        public static bool PedidoCorreto(int pedidoId)
+        {
+            bool pedidoCorreto = false;
+            if(pedidoId == DadosLocais.listaPedidos.Count)
+            {
+                pedidoCorreto = true;
+            }
+            else
+            {
+                pedidoCorreto = false;
+            }
+
+            return pedidoCorreto;
         }
     }
 }

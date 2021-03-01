@@ -10,15 +10,31 @@ namespace RestaurantApp
         {
             CarregarDados.IniciandoDados();
             /*----------------------------*/
-            ComandaViews.VisualizarComanda(3);
+            Console.WriteLine("Deseja iniciar uma nova comanda? (s/n)");
+            char r = char.Parse(Console.ReadLine());
 
-            /*ComandaViews.IniciarComanda();
-            ComandaViews.ContinuarComanda();
+            bool respostaCorreta = VerificarResposta.VerificaResposta(r);
 
-            ProdutosViews.MostrarMenu();
+            while(respostaCorreta != true)
+            {
+                Console.WriteLine("Escolha 's' ou 'n', outra resposta não é valida!");
+                Console.WriteLine("Deseja iniciar uma nova comanda? (s/n)");
+                r = char.Parse(Console.ReadLine());
 
-            PedidoViews.RealizarPedido();
-            PedidoViews.MostrarPedido(ComandaViews.comandaId);*/
+                respostaCorreta = VerificarResposta.VerificaResposta(r);
+            }
+
+            if (r == 's')
+            {
+                Console.Clear();
+                ComandaViews.IniciarComanda();
+            }else if(r == 'n')
+            {
+                Console.WriteLine("Informe o numero da comanda que deseja consultar: ");
+                int comandaId = int.Parse(Console.ReadLine());
+                ComandaViews.VisualizarComanda(comandaId);
+            }           
+
         }
     }
 }
