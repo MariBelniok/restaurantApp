@@ -79,11 +79,11 @@ namespace RestaurantApp.Service
                         c.DataHoraSaida = DateTime.Now;
                         c.Valor = (x.Valor) * 0;
                         c.ComandaPaga = true;
+                        MesaService.AtualizarStatusMesa(c.MesaId);
                     });
                 }
             });
 
-            MesaService.AtualizarStatusMesa(comandaId);
             File.WriteAllText(DadosLocais.caminhoComanda, string.Empty);
             DadosLocais.SalvarComandas();
         }
@@ -97,9 +97,9 @@ namespace RestaurantApp.Service
                         c.DataHoraSaida = DateTime.Now;
                         c.Valor = x.Valor;
                         c.ComandaPaga = true;
+                        MesaService.AtualizarStatusMesa(c.MesaId);
                     });
                 }
-                MesaService.AtualizarStatusMesa(comandaId);
             });
 
             File.WriteAllText(DadosLocais.caminhoComanda, string.Empty);

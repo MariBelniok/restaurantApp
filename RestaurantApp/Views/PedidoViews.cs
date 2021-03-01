@@ -147,8 +147,9 @@ namespace RestaurantApp.Views
                             Console.WriteLine($"PEDIDO NUMERO:{p.PedidoId}");
                             Console.WriteLine("");
                             Console.WriteLine($"Item: {x.NomeProduto}");
+                            Console.WriteLine($"Valor Item: {x.ValorProduto} ");
                             Console.WriteLine($"Quantidade:{p.QuantidadePorProduto}");
-                            Console.WriteLine($"ValorTotal: R${p.ValorPedido:F2}");
+                            Console.WriteLine($"Valor Pedido: R${p.ValorPedido:F2}");
                             if(p.AndamentoDoPedido == 1)
                             {
                                 Console.WriteLine("Pedido Realizado!");
