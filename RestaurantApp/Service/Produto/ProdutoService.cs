@@ -21,7 +21,7 @@ namespace RestaurantApp.Service
                 .ToList();
         }
 
-
+        //LISTA TODOS OS PRODUTOS QUE ESTAO DISPONIVEIS
         public static List<ProdutoModel> ListarProdutos()
         {
             List<ProdutoModel> produtos = new List<ProdutoModel>();

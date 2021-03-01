@@ -7,6 +7,7 @@ namespace RestaurantApp.Service
 {
     class MesaService
     {
+        //MUDA STATUS DA MESA QUANDO ABRE OU FECHA COMANDA
         public static void AtualizarStatusMesa(int mesaId)
         {
             DadosLocais.listaMesas.ForEach(m =>
@@ -22,6 +23,8 @@ namespace RestaurantApp.Service
             File.WriteAllText(DadosLocais.caminhoMesas, string.Empty);
             DadosLocais.SalvarMesa();
         }
+
+        //VERIFICA SE A MESA ESTA DESOCUPADA
         public static bool MesaDesocupada(int mesaId)
         {
             bool mesaDesocupada = false;
@@ -32,6 +35,7 @@ namespace RestaurantApp.Service
             return mesaDesocupada;
         }
         
+        //VERIFICA QUAIS MESAS ESTAO DISPONIVEIS
         public static List<MesaModel> BuscarMesaDisponivel()
         {
             return Dados.DadosLocais.listaMesas
@@ -42,6 +46,8 @@ namespace RestaurantApp.Service
                 })
                 .ToList();
         }
+
+        //LISTA MESAS DISPONIVEIS
         public static List<MesaModel> ListarMesasDisponiveis()
         {
             var listaMesasDisponiveis = new List<MesaModel>();

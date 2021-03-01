@@ -179,6 +179,7 @@ namespace RestaurantApp.Views
             }
             if (resp == 's' || resp == 'S')
             {
+                //PEDE PARA USUARIO ESCOLHER ENTRE CANCELAR OU EDITAR
                 Console.WriteLine("Favor informar com (c) para cancelar ou (e) para editar");
                 char res = char.Parse(Console.ReadLine());
 

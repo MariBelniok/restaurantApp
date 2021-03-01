@@ -8,6 +8,7 @@ namespace RestaurantApp.Service
 {
     class ComandaService
     {
+        //ADICIONA COMANDA A UMA MODEL AUXILIAR
         public static void AddComanda(AddComandaModel model)
         {
             DadosLocais.listaComandas.Add(new Comanda() { 
@@ -20,6 +21,7 @@ namespace RestaurantApp.Service
                 QuantidadePessoasNaMesa = model.QuantidadePessoasNaMesa
             });
         }
+        //LISTA AS COMANDAS ADICIONADAS NA MODEL
         public static List<ComandaModel> ListarComandas()
         {
             var comandas = new List<ComandaModel>();
@@ -38,6 +40,8 @@ namespace RestaurantApp.Service
             });
             return comandas;
         }
+
+        //CALCULA O VALOR TOTAL DA COMANDA
         public static float ValorTotalComanda(int comandaId)
         {
             var listarComanda = ListarComandas();
@@ -69,6 +73,8 @@ namespace RestaurantApp.Service
             });
             return valorTotalComanda;
         }
+
+        //CANCELA COMANDA
         public static void CancelarComanda(int comandaId)
         {
             DadosLocais.listaComandas.ForEach(x => {
@@ -87,6 +93,8 @@ namespace RestaurantApp.Service
             File.WriteAllText(DadosLocais.caminhoComanda, string.Empty);
             DadosLocais.SalvarComandas();
         }
+
+        //ENCERRA E PAGA COMANDA
         public static void EncerrarComanda(int comandaId)
         {
             DadosLocais.listaComandas.ForEach(x => { 

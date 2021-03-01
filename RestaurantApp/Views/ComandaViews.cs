@@ -12,6 +12,7 @@ namespace RestaurantApp.Views
             float valorTotalRodizio = 0;
             return valorTotalRodizio += valorTotal;
         }
+
         //ID DA COMANDA AO INICIAR ATENDIMENTO
         public static int comandaId = Dados.DadosLocais.listaComandas.Count + 1;
 
@@ -45,6 +46,7 @@ namespace RestaurantApp.Views
 
             Console.WriteLine("Quantidade de pessoas: ");
             int qtePessoas = int.Parse(Console.ReadLine());
+            //EMITE AVISO DE CAPACIDADE MAXIMA POR MESA
             while (qtePessoas > 4)
             {
                 Console.Clear();

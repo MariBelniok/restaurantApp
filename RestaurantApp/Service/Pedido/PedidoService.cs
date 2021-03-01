@@ -10,6 +10,7 @@ namespace RestaurantApp.Service
 {
     class PedidoService
     {
+        //LISTA OS PEDIDOS REALIZADOS
         public static List<PedidoModel> ListarPedidos()
         {
             var pedidos = new List<PedidoModel>();
@@ -29,6 +30,7 @@ namespace RestaurantApp.Service
 
             return pedidos;
         }
+        //ADICIONA PEDIDOS EM MODEL AUXILIAR
         public static void AddPedido(AdicionarModel model)
         {
             DadosLocais.listaPedidos.Add(new Pedido()
@@ -42,6 +44,7 @@ namespace RestaurantApp.Service
             }); ;
         }
 
+        //REMOVE UM PRODUTO
         public static void RemoveProduto(int pedidoId)
         {
             DadosLocais.listaPedidos.ForEach(x =>
@@ -53,6 +56,7 @@ namespace RestaurantApp.Service
             });
         }
 
+        //ATUALIZA UM PRODUTO
         public static void AtualizarProduto(int pedidoId, int quantidadeItem)
         {
             DadosLocais.listaPedidos.ForEach(x =>
@@ -67,6 +71,8 @@ namespace RestaurantApp.Service
                 }
             });
         }
+
+        //CALCULA O VALOR TOTAL DO PEDIDO
         public static float ValorProduto(int prodId, int quantidade)
         {
             float sum = 0;
@@ -82,7 +88,7 @@ namespace RestaurantApp.Service
 
         }
 
-        //VERFICA SE O PEDIDO PODE SER CANCELADO OU EDITADO
+        //VERFICA SE O PEDIDO ESCOLHIDO PODE SER CANCELADO OU EDITADO
         public static bool PedidoCorreto(int pedidoId)
         {
             bool pedidoCorreto = false;
