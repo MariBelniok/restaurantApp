@@ -6,11 +6,11 @@ namespace RestaurantApp.Entities
 {
     public class Pedido
     {
-        public int PedidoId { get; set; }
-        public int ComandaId { get; set; }
-        public int ProdutoId { get; set; }
-        public int QuantidadePorProduto { get; set; }
+        public int PedidoId { get; set; } //PK
+        public int ComandaId { get; set; } //FK
+        public int ProdutoId { get; set; } //FK
+        public int QtdeProduto { get; set; }
         public float ValorPedido { get; set; }
-        public int AndamentoDoPedido { get; set; }
+        public int AndamentoPedido { get; set; }
     }
 }

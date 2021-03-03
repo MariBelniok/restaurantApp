@@ -1,14 +1,12 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Globalization;
 using System.Collections.Generic;
 using RestaurantApp.Entities;
-using RestaurantApp.Service;
 
 namespace RestaurantApp.Dados
 {
-    public class DadosLocais
+    public class Dados
     {
         public static string caminhoPedidos = @"C:\Users\Dell\Desktop\restaurantApp\RestaurantApp\Dados\Pedidos.csv";
         public static string caminhoComanda = @"C:\Users\Dell\Desktop\restaurantApp\RestaurantApp\Dados\Comandas.csv";
@@ -22,6 +20,14 @@ namespace RestaurantApp.Dados
         public static List<Mesa> listaMesas = new List<Mesa>();
         public static List<StatusPedido> listaStatusPedidos = new List<StatusPedido>();
 
+        public static void IniciandoDados()
+        {
+            BuscarComandas();
+            BuscarMesas();
+            BuscarPedidos();
+            BuscarProdutos();
+            BuscarStatusPedido();
+        }
         public static List<Comanda> BuscarComandas()
         {
             string[] comandas = File.ReadAllLines(caminhoComanda);
@@ -45,7 +51,7 @@ namespace RestaurantApp.Dados
                     DataHoraSaida = dataHoraSaida,
                     Valor = valor,
                     ComandaPaga = comandaPaga,
-                    QuantidadePessoasNaMesa = quantidadePessoasNaMesa
+                    QtdePessoasMesa = quantidadePessoasNaMesa
                 });
             }
             return listaComandas;
@@ -85,7 +91,7 @@ namespace RestaurantApp.Dados
                 listaMesas.Add(new Mesa
                 {
                     MesaId = mesaId,
-                    CapacidadePorMesa = capacidadePorMesa,
+                    CapacidadeMesa = capacidadePorMesa,
                     MesaDisponivel = mesaDisponivel
                 });
             }
@@ -102,18 +108,18 @@ namespace RestaurantApp.Dados
                 int pedidoId = int.Parse(dadosDoPedido[0]);
                 int comandaId = int.Parse(dadosDoPedido[1]);
                 int produtoId = int.Parse(dadosDoPedido[2]);
-                int quantidadePorProduto = int.Parse(dadosDoPedido[3]);
+                int qtdeProduto = int.Parse(dadosDoPedido[3]);
                 float valorPedido = float.Parse(dadosDoPedido[4], CultureInfo.InvariantCulture);
-                int andamentoDoPedido = int.Parse(dadosDoPedido[5]);
+                int andamentoPedido = int.Parse(dadosDoPedido[5]);
 
                 listaPedidos.Add(new Pedido
                 {
                     PedidoId = pedidoId,
                     ComandaId = comandaId,
                     ProdutoId = produtoId,
-                    QuantidadePorProduto = quantidadePorProduto,
+                    QtdeProduto = qtdeProduto,
                     ValorPedido = valorPedido,
-                    AndamentoDoPedido = andamentoDoPedido
+                    AndamentoPedido = andamentoPedido
                 });
             }
             return listaPedidos;
@@ -144,7 +150,7 @@ namespace RestaurantApp.Dados
             {
                 listaComandas.ForEach(c =>
                 {
-                    var comanda = string.Join(',', c.ComandaId, c.MesaId, c.DataHoraEntrada, c.DataHoraSaida, c.Valor, c.ComandaPaga, c.QuantidadePessoasNaMesa);
+                    var comanda = string.Join(',', c.ComandaId, c.MesaId, c.DataHoraEntrada, c.DataHoraSaida, c.Valor, c.ComandaPaga, c.QtdePessoasMesa);
                     sw.WriteLine(comanda);
                 });
             }
@@ -156,7 +162,7 @@ namespace RestaurantApp.Dados
             {
                 listaPedidos.ForEach(p =>
                 {
-                    var pedidos = (string.Join(',', p.PedidoId, p.ComandaId, p.ProdutoId, p.QuantidadePorProduto, p.ValorPedido, p.AndamentoDoPedido));
+                    var pedidos = (string.Join(',', p.PedidoId, p.ComandaId, p.ProdutoId, p.QtdeProduto, p.ValorPedido, p.AndamentoPedido));
                     sw.WriteLine(pedidos);
                 });
             }
@@ -168,7 +174,7 @@ namespace RestaurantApp.Dados
             {
                 listaMesas.ForEach(m =>
                 {
-                    var mesas = (string.Join(',', m.MesaId, m.CapacidadePorMesa, m.MesaDisponivel));
+                    var mesas = (string.Join(',', m.MesaId, m.CapacidadeMesa, m.MesaDisponivel));
                     sw.WriteLine(mesas);
                 });
             }

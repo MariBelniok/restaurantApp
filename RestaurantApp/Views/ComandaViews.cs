@@ -14,7 +14,7 @@ namespace RestaurantApp.Views
         }
 
         //ID DA COMANDA AO INICIAR ATENDIMENTO
-        public static int comandaId = Dados.DadosLocais.listaComandas.Count + 1;
+        public static int comandaId = Dados.Dados.listaComandas.Count + 1;
 
 
         //PEDIR DADOS DA COMANDA
@@ -60,16 +60,16 @@ namespace RestaurantApp.Views
 
             BemVindo(qtePessoas, valorTotal);
 
-            var model = new AddComandaModel()
+            var model = new AdicionarComandaModel()
             {
                 ComandaId = comandaId,
                 MesaId = numeroMesa,
                 DataHoraEntrada = DateTime.Now,
                 Valor = ValorTotalRodizio(valorTotal),
                 ComandaPaga = false,
-                QuantidadePessoasNaMesa = qtePessoas
+                QtdePessoasMesa = qtePessoas
             };
-            ComandaService.AddComanda(model);
+            ComandaService.AdicionarComanda(model);
 
             ContinuarComanda();
         }
@@ -161,8 +161,8 @@ namespace RestaurantApp.Views
         //TODAS INFORMAÇOES DA COMANDA SOLICITADA
         public static void VisualizarComanda(int comandaId)
         {
-            var listarComanda = ComandaService.ListarComandas();
-            float valorTotalComanda = ComandaService.ValorTotalComanda(comandaId);
+            var listarComanda = ComandaService.BuscarComanda(comandaId);
+            double valorTotalComanda = ComandaService.ValorTotalComanda(comandaId);
 
             listarComanda.ForEach(x =>
             {
@@ -190,27 +190,37 @@ namespace RestaurantApp.Views
                     Console.WriteLine("PEDIDOS REALIZADOS: ");
                     Console.WriteLine($"ITEM: Rodizio");
                     Console.WriteLine($"VALOR ITEM: 70,00");
-                    Console.WriteLine($"QUANTIDADE: {x.QuantidadePessoasNaMesa}");
-                    Console.WriteLine($"VALOR TOTAL PEDIDO: R${70 * x.QuantidadePessoasNaMesa:F2}");
+                    Console.WriteLine($"QUANTIDADE: {x.QtdePessoasMesa}");
+                    Console.WriteLine($"VALOR TOTAL PEDIDO: R${70 * x.QtdePessoasMesa:F2}");
                     Console.WriteLine();
-                    Dados.DadosLocais.listaPedidos.ForEach(p =>
+                    //Adiciona rodizio como pedido na comanda
+                    var model = new AdicionarPedidoModel()
+                    {
+                        AndamentoPedido = 1,
+                        ComandaId = ComandaViews.comandaId,
+                        ProdutoId = 1,
+                        QtdeProduto = x.QtdePessoasMesa,
+                        ValorPedido = PedidoService.ValorPedido(1, x.QtdePessoasMesa)
+                    };
+                    PedidoService.AdicionarPedido(model);
+                    Dados.Dados.listaPedidos.ForEach(p =>
                     {
                         if (p.ComandaId == comandaId)
                         {
-                            Dados.DadosLocais.listaProdutos.ForEach(z =>
+                            Dados.Dados.listaProdutos.ForEach(z =>
                             {
                                 if(z.ProdutoId == p.ProdutoId)
                                 {
                                     Console.WriteLine();
                                     Console.WriteLine($"ITEM: {z.NomeProduto}");
                                     Console.WriteLine($"VALOR ITEM: R${z.ValorProduto:F2}");
-                                    Console.WriteLine($"QUANTIDADE: {p.QuantidadePorProduto}");
+                                    Console.WriteLine($"QUANTIDADE: {p.QtdeProduto}");
                                     Console.WriteLine($"VALOR TOTAL PEDIDO: R${p.ValorPedido:F2}");
-                                    if(p.AndamentoDoPedido == 1)
+                                    if(p.AndamentoPedido == 1)
                                     {
                                         Console.WriteLine($"STATUS PEDIDO: ENTREGUE");
                                     }
-                                    if(p.AndamentoDoPedido == 2)
+                                    if(p.AndamentoPedido == 2)
                                     {
                                         Console.WriteLine($"STATUS PEDIDO: CANCELADO");
                                     }

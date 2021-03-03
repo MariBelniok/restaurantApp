@@ -10,8 +10,8 @@ namespace RestaurantApp.Service
         public int MesaId { get; set; }
         public DateTime DataHoraEntrada { get; set; }
         public DateTime DataHoraSaida { get; set; }
-        public float Valor { get; set; }
+        public double Valor { get; set; }
         public bool ComandaPaga { get; set; }
-        public int QuantidadePessoasNaMesa { get; set; }
+        public int QtdePessoasMesa { get; set; }
     }
 }

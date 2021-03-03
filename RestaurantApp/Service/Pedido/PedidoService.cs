@@ -11,19 +11,19 @@ namespace RestaurantApp.Service
     class PedidoService
     {
         //LISTA OS PEDIDOS REALIZADOS
-        public static List<PedidoModel> ListarPedidos()
+        public static List<PedidoModel> BuscarPedidos()
         {
             var pedidos = new List<PedidoModel>();
-            DadosLocais.listaPedidos.ForEach(x =>
+            Dados.Dados.listaPedidos.ForEach(x =>
             {
                 var pedido = new PedidoModel()
                 {
                     PedidoId = x.PedidoId,
                     ProdutoId = x.ProdutoId,
                     ComandaId = x.ComandaId,
-                    QuantidadePorProduto = x.AndamentoDoPedido,
+                    QtdeProduto = x.QtdeProduto,
                     ValorPedido = x.ValorPedido,
-                    AndamentoDoProduto = x.AndamentoDoPedido
+                    AndamentoPedido = x.AndamentoPedido
                 };
                 pedidos.Add(pedido);
             });
@@ -31,68 +31,57 @@ namespace RestaurantApp.Service
             return pedidos;
         }
         //ADICIONA PEDIDOS EM MODEL AUXILIAR
-        public static void AddPedido(AdicionarModel model)
+        public static void AdicionarPedido(AdicionarPedidoModel model)
         {
-            DadosLocais.listaPedidos.Add(new Pedido()
+            Dados.Dados.listaPedidos.Add(new Pedido()
             {
-                PedidoId = DadosLocais.listaPedidos.Count + 1,
+                PedidoId = Dados.Dados.listaPedidos.Count + 1,
                 ComandaId = model.ComandaId,
                 ProdutoId = model.ProdutoId,
-                QuantidadePorProduto = model.QuantidadePorProduto,
+                QtdeProduto = model.QtdeProduto,
                 ValorPedido = model.ValorPedido,
-                AndamentoDoPedido = model.AndamentoDoProduto
+                AndamentoPedido = model.AndamentoPedido
             }); ;
         }
 
         //REMOVE UM PRODUTO
-        public static void RemoveProduto(int pedidoId)
+        public static void RemoverPedido(int pedidoId)
         {
-            DadosLocais.listaPedidos.ForEach(x =>
+            Dados.Dados.listaPedidos.ForEach(x =>
             {
                 if (x.PedidoId == pedidoId)
                 {
-                    x.AndamentoDoPedido = 2;
+                    x.AndamentoPedido = 2;
                 }
             });
         }
 
         //ATUALIZA UM PRODUTO
-        public static void AtualizarProduto(int pedidoId, int quantidadeItem)
+        public static void AtualizarPedido(int pedidoId, int quantidadeItem)
         {
-            DadosLocais.listaPedidos.ForEach(x =>
+            Dados.Dados.listaPedidos.ForEach(p =>
             {
-                if (x.PedidoId == pedidoId)
+                if (p.PedidoId == pedidoId)
                 {
-                    DadosLocais.listaPedidos.ForEach(p =>
-                    {
-                        p.QuantidadePorProduto = quantidadeItem;
-                        p.ValorPedido = ValorProduto(p.ProdutoId, quantidadeItem);
-                    });
+                    p.QtdeProduto = quantidadeItem;
+                    p.ValorPedido = ValorPedido(p.ProdutoId, quantidadeItem);
                 }
             });
         }
 
         //CALCULA O VALOR TOTAL DO PEDIDO
-        public static float ValorProduto(int prodId, int quantidade)
+        public static float ValorPedido(int prodId, int quantidade)
         {
-            float sum = 0;
-            DadosLocais.listaProdutos.ForEach(x =>
-            {
-                if (x.ProdutoId == prodId)
-                {
-                    sum += (x.ValorProduto * (float)quantidade);
-                }
-            });
-
-            return sum;
-
+            return Dados.Dados.listaProdutos
+                    .Where(p => p.ProdutoId == prodId)
+                    .Sum(p => p.ValorProduto * quantidade);
         }
 
         //VERFICA SE O PEDIDO ESCOLHIDO PODE SER CANCELADO OU EDITADO
         public static bool PedidoCorreto(int pedidoId)
         {
             bool pedidoCorreto = false;
-            if(pedidoId == DadosLocais.listaPedidos.Count)
+            if(pedidoId == Dados.Dados.listaPedidos.Count)
             {
                 pedidoCorreto = true;
             }

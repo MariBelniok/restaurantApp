@@ -8,7 +8,7 @@ namespace RestaurantApp
     {
         static void Main(string[] args)
         {
-            CarregarDados.IniciandoDados();
+            Dados.Dados.IniciandoDados();
             /*----------------------------*/
             Console.WriteLine("Deseja iniciar uma nova comanda? (s/n)");
             char r = char.Parse(Console.ReadLine());

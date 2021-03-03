@@ -2,7 +2,7 @@
 {
     public class StatusPedido
     {
-        public int StatusId { get; set; }
+        public int StatusId { get; set; } //PK
         public string Descricao { get; set; }
     }
 }

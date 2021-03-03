@@ -33,15 +33,15 @@ namespace RestaurantApp.Views
 
                 Console.WriteLine("Quantos desse produto você deseja? ");
                 int quantidadeItem = int.Parse(Console.ReadLine());
-                var model = new AdicionarModel()
+                var model = new AdicionarPedidoModel()
                 {
-                    AndamentoDoProduto = 1,
+                    AndamentoPedido = 1,
                     ComandaId = ComandaViews.comandaId,
                     ProdutoId = produtoId,
-                    QuantidadePorProduto = quantidadeItem,
-                    ValorPedido = PedidoService.ValorProduto(produtoId, quantidadeItem)
+                    QtdeProduto = quantidadeItem,
+                    ValorPedido = PedidoService.ValorPedido(produtoId, quantidadeItem)
                 };
-                PedidoService.AddPedido(model);
+                PedidoService.AdicionarPedido(model);
 
                 Console.Clear();
             }
@@ -63,9 +63,13 @@ namespace RestaurantApp.Views
                 if (r == 's')
                 {
                     Console.Clear();
-                    File.WriteAllText(DadosLocais.caminhoPedidos, string.Empty);
-                    DadosLocais.SalvarPedidos();
-
+                    File.WriteAllText(Dados.Dados.caminhoPedidos, string.Empty);
+                    Dados.Dados.SalvarPedidos();
+                    Console.WriteLine();
+                    Console.WriteLine("---------------------------");
+                    Console.WriteLine("|Comanda paga com sucesso!|");
+                    Console.WriteLine("---------------------------");
+                    Console.WriteLine();
                     ComandaService.EncerrarComanda(ComandaViews.comandaId);
                     ComandaViews.VisualizarComanda(ComandaViews.comandaId);
 
@@ -94,7 +98,7 @@ namespace RestaurantApp.Views
                 pedidoCorreto = PedidoService.PedidoCorreto(pedidoId);
             }
 
-            PedidoService.RemoveProduto(pedidoId);
+            PedidoService.RemoverPedido(pedidoId);
 
             Console.Clear();
             Console.WriteLine("Pedido cancelado com sucesso!");
@@ -123,7 +127,7 @@ namespace RestaurantApp.Views
             Console.WriteLine("Quantos desse produto você deseja? ");
             int quantidadeItem = int.Parse(Console.ReadLine());
 
-            PedidoService.AtualizarProduto(pedidoId, quantidadeItem);
+            PedidoService.AtualizarPedido(pedidoId, quantidadeItem);
 
             Console.WriteLine();
             Console.Clear();
@@ -134,12 +138,12 @@ namespace RestaurantApp.Views
         //MOSTRA PEDIDO PARA USUARIO
         public static void MostrarPedido(int comandaId)
         {
-            
-            DadosLocais.listaPedidos.ForEach(p =>
+
+            Dados.Dados.listaPedidos.ForEach(p =>
             {
                 if (p.ComandaId == comandaId)
                 {
-                    DadosLocais.listaProdutos.ForEach(x =>
+                    Dados.Dados.listaProdutos.ForEach(x =>
                     {
                         if (p.ProdutoId == x.ProdutoId)
                         {
@@ -148,13 +152,13 @@ namespace RestaurantApp.Views
                             Console.WriteLine("");
                             Console.WriteLine($"Item: {x.NomeProduto}");
                             Console.WriteLine($"Valor Item: {x.ValorProduto} ");
-                            Console.WriteLine($"Quantidade:{p.QuantidadePorProduto}");
+                            Console.WriteLine($"Quantidade:{p.QtdeProduto}");
                             Console.WriteLine($"Valor Pedido: R${p.ValorPedido:F2}");
-                            if(p.AndamentoDoPedido == 1)
+                            if(p.AndamentoPedido == 1)
                             {
                                 Console.WriteLine("Pedido Realizado!");
                             }
-                            if(p.AndamentoDoPedido == 2)
+                            if(p.AndamentoPedido == 2)
                             {
                                 Console.WriteLine("Pedido Cancelado!");
                             }
@@ -258,8 +262,8 @@ namespace RestaurantApp.Views
                 if (resposta == 's' || resposta == 'S')
                 {
                     Console.Clear();
-                    File.WriteAllText(DadosLocais.caminhoPedidos, string.Empty);
-                    DadosLocais.SalvarPedidos();
+                    File.WriteAllText(Dados.Dados.caminhoPedidos, string.Empty);
+                    Dados.Dados.SalvarPedidos();
 
                     ComandaService.EncerrarComanda(ComandaViews.comandaId);
                     ComandaViews.VisualizarComanda(ComandaViews.comandaId);

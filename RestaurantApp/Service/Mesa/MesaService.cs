@@ -10,7 +10,7 @@ namespace RestaurantApp.Service
         //MUDA STATUS DA MESA QUANDO ABRE OU FECHA COMANDA
         public static void AtualizarStatusMesa(int mesaId)
         {
-            DadosLocais.listaMesas.ForEach(m =>
+            Dados.Dados.listaMesas.ForEach(m =>
             {
                 if(mesaId == m.MesaId && m.MesaDisponivel == true)
                 {
@@ -20,15 +20,15 @@ namespace RestaurantApp.Service
                     m.MesaDisponivel = true;
                 }
             });
-            File.WriteAllText(DadosLocais.caminhoMesas, string.Empty);
-            DadosLocais.SalvarMesa();
+            File.WriteAllText(Dados.Dados.caminhoMesas, string.Empty);
+            Dados.Dados.SalvarMesa();
         }
 
         //VERIFICA SE A MESA ESTA DESOCUPADA
         public static bool MesaDesocupada(int mesaId)
         {
             bool mesaDesocupada = false;
-            if(DadosLocais.listaMesas.Any(x => x.MesaDisponivel == true && mesaId == x.MesaId))
+            if(Dados.Dados.listaMesas.Any(x => x.MesaDisponivel == true && mesaId == x.MesaId))
             {
                 mesaDesocupada = true;
             }
@@ -38,7 +38,7 @@ namespace RestaurantApp.Service
         //VERIFICA QUAIS MESAS ESTAO DISPONIVEIS
         public static List<MesaModel> BuscarMesaDisponivel()
         {
-            return Dados.DadosLocais.listaMesas
+            return Dados.Dados.listaMesas
                 .Where(p => p.MesaDisponivel)
                 .Select(a => new MesaModel()
                 {

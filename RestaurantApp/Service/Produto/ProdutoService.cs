@@ -10,7 +10,7 @@ namespace RestaurantApp.Service
         //FILTRA PRODUTOS DISPONIVEIS
         public static List<ProdutoModel> BuscarProdutoDisponivel()
         {
-            return Dados.DadosLocais.listaProdutos
+            return Dados.Dados.listaProdutos
                 .Where(p => p.ProdutoDisponivel)
                 .Select(a => new ProdutoModel()
                 {
