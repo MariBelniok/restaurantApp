@@ -52,7 +52,6 @@ namespace RestaurantApp.Service
             comanda.ComandaPaga = true;
             contexto.SaveChanges();
             MesaService.DesocuparMesa(comanda.MesaId);
-
         }
 
         //BUSCA A COMANDAS ADICIONADAS NA MODEL

@@ -5,6 +5,7 @@ using System.Linq;
 using RestaurantApp.Entities;
 using RestaurantApp.Views;
 using RestaurantApp.Dados;
+using Microsoft.EntityFrameworkCore;
 
 namespace RestaurantApp.Service
 {

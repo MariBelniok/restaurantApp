@@ -219,12 +219,11 @@ namespace RestaurantApp.Views
                                     Console.WriteLine($"VALOR ITEM: R${z.ValorProduto:F2}");
                                     Console.WriteLine($"QUANTIDADE: {p.QtdeProduto}");
                                     Console.WriteLine($"VALOR TOTAL PEDIDO: R${p.ValorPedido:F2}");
-                                    
-                                    foreach (var sp in statusPedido) {
-                                        if(p.StatusPedido == sp.StatusId)
-                                        Console.WriteLine($"STATUS PEDIDO: {sp.Descricao.ToUpper()}");
+                                    foreach (var sp in statusPedido)
+                                    {
+                                        if (p.StatusPedido == sp.StatusId)
+                                            Console.WriteLine($"STATUS PEDIDO: {sp.Descricao.ToUpper()}");
                                     }
-                                    
                                     Console.WriteLine();
                                 }
                             });
