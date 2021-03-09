@@ -21,7 +21,7 @@ namespace RestaurantApp.Service
                 ComandaPaga = model.ComandaPaga,
                 QtdePessoasMesa = model.QtdePessoasMesa
             };
-            MesaService.AtualizarStatusMesa(model.ComandaId);
+            MesaService.OcuparMesa(model.MesaId);
             contexto.Add(comanda);
             contexto.SaveChanges();
         }
@@ -37,7 +37,7 @@ namespace RestaurantApp.Service
             comanda.Valor = ValorTotalComanda(comandaId);
             comanda.ComandaPaga = true;
             contexto.SaveChanges();
-            MesaService.AtualizarStatusMesa(comanda.MesaId);
+            MesaService.DesocuparMesa(comanda.MesaId);
         }
 
         //CANCELA COMANDA
@@ -51,7 +51,8 @@ namespace RestaurantApp.Service
             comanda.Valor = ValorTotalComanda(comandaId) * 0;
             comanda.ComandaPaga = true;
             contexto.SaveChanges();
-            MesaService.AtualizarStatusMesa(comanda.MesaId);
+            MesaService.DesocuparMesa(comanda.MesaId);
+
         }
 
         //BUSCA A COMANDAS ADICIONADAS NA MODEL

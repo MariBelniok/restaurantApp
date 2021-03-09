@@ -7,20 +7,23 @@ namespace RestaurantApp.Service
     public class MesaService
     {
         //MUDA STATUS DA MESA QUANDO ABRE OU FECHA COMANDA
-        public static void AtualizarStatusMesa(int mesaId)
+        public static void OcuparMesa(int mesaId)
         {
             var contexto = new RestauranteContexto();
             var mesa = contexto.Mesa
                         .Where(m => m.MesaId == mesaId)
                         .FirstOrDefault();
-            if (mesa.MesaOcupada)
-            {
-                mesa.MesaOcupada = false;
-            }
-            else
-            {
-                mesa.MesaOcupada = true;
-            }
+            mesa.MesaOcupada = true;
+            contexto.SaveChanges();
+        }
+
+        public static void DesocuparMesa(int mesaId)
+        {
+            var contexto = new RestauranteContexto();
+            var mesa = contexto.Mesa
+                        .Where(m => m.MesaId == mesaId)
+                        .FirstOrDefault();
+            mesa.MesaOcupada = false;
             contexto.SaveChanges();
         }
 
