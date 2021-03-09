@@ -35,7 +35,7 @@ namespace RestaurantApp.Views
                 int quantidadeItem = int.Parse(Console.ReadLine());
                 var model = new AdicionarPedidoModel()
                 {
-                    AndamentoPedido = 1,
+                    StatusPedido = 1,
                     ComandaId = ComandaViews.comandaId,
                     ProdutoId = produtoId,
                     QtdeProduto = quantidadeItem,
@@ -63,8 +63,6 @@ namespace RestaurantApp.Views
                 if (r == 's')
                 {
                     Console.Clear();
-                    File.WriteAllText(Dados.Dados.caminhoPedidos, string.Empty);
-                    Dados.Dados.SalvarPedidos();
                     Console.WriteLine();
                     Console.WriteLine("---------------------------");
                     Console.WriteLine("|Comanda paga com sucesso!|");
@@ -103,7 +101,7 @@ namespace RestaurantApp.Views
             Console.Clear();
             Console.WriteLine("Pedido cancelado com sucesso!");
             Console.WriteLine();
-            ProdutosViews.MostrarMenu();
+            ProdutoViews.MostrarMenu();
             RealizarPedido();
         }
 
@@ -138,12 +136,14 @@ namespace RestaurantApp.Views
         //MOSTRA PEDIDO PARA USUARIO
         public static void MostrarPedido(int comandaId)
         {
-
-            Dados.Dados.listaPedidos.ForEach(p =>
+            var contexto = new RestauranteContexto();
+            var listaPedidos = PedidoService.BuscarPedidos(comandaId);
+            var listaProdutos = ProdutoService.BuscarProdutoDisponivel();
+            listaPedidos.ForEach(p =>
             {
                 if (p.ComandaId == comandaId)
                 {
-                    Dados.Dados.listaProdutos.ForEach(x =>
+                    listaProdutos.ForEach(x =>
                     {
                         if (p.ProdutoId == x.ProdutoId)
                         {
@@ -154,11 +154,11 @@ namespace RestaurantApp.Views
                             Console.WriteLine($"Valor Item: {x.ValorProduto} ");
                             Console.WriteLine($"Quantidade:{p.QtdeProduto}");
                             Console.WriteLine($"Valor Pedido: R${p.ValorPedido:F2}");
-                            if(p.AndamentoPedido == 1)
+                            if (p.StatusPedido == 1)
                             {
                                 Console.WriteLine("Pedido Realizado!");
                             }
-                            if(p.AndamentoPedido == 2)
+                            if (p.StatusPedido == 2)
                             {
                                 Console.WriteLine("Pedido Cancelado!");
                             }
@@ -211,7 +211,7 @@ namespace RestaurantApp.Views
                 else
                 {
                     Console.Clear();
-                    ProdutosViews.MostrarMenu();
+                    ProdutoViews.MostrarMenu();
                     RealizarPedido();
                     MostrarPedido(ComandaViews.comandaId);
                 }
@@ -240,7 +240,7 @@ namespace RestaurantApp.Views
             if (r == 's' || r == 'S')
             {
                 Console.Clear();
-                ProdutosViews.MostrarMenu();
+                ProdutoViews.MostrarMenu();
                 RealizarPedido();
                 MostrarPedido(ComandaViews.comandaId);
             }
@@ -262,8 +262,6 @@ namespace RestaurantApp.Views
                 if (resposta == 's' || resposta == 'S')
                 {
                     Console.Clear();
-                    File.WriteAllText(Dados.Dados.caminhoPedidos, string.Empty);
-                    Dados.Dados.SalvarPedidos();
 
                     ComandaService.EncerrarComanda(ComandaViews.comandaId);
                     ComandaViews.VisualizarComanda(ComandaViews.comandaId);
@@ -273,7 +271,7 @@ namespace RestaurantApp.Views
                 else
                 {
                     Console.Clear();
-                    ProdutosViews.MostrarMenu();
+                    ProdutoViews.MostrarMenu();
                     RealizarPedido();
                     MostrarPedido(ComandaViews.comandaId);
                 }

@@ -4,6 +4,6 @@
     {
         public int ProdutoId { get; set; }
         public string NomeProduto { get;  set; }
-        public float ValorProduto { get;  set; }
+        public double ValorProduto { get;  set; }
     }
 }

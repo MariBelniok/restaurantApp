@@ -8,7 +8,7 @@ namespace RestaurantApp.Service
         public int ComandaId { get; set; }
         public int ProdutoId { get; set; }
         public int QtdeProduto { get; set; }
-        public float ValorPedido { get; set; }
-        public int AndamentoPedido { get; set; }
+        public double ValorPedido { get; set; }
+        public int StatusPedido { get; set; }
     }
 }

@@ -11,68 +11,75 @@ namespace RestaurantApp.Service
     class PedidoService
     {
         //LISTA OS PEDIDOS REALIZADOS
-        public static List<PedidoModel> BuscarPedidos()
+        public static List<PedidoModel> BuscarPedidos(int comandaId)
         {
-            var pedidos = new List<PedidoModel>();
-            Dados.Dados.listaPedidos.ForEach(x =>
-            {
-                var pedido = new PedidoModel()
+            var contexto = new RestauranteContexto();
+            var pedidos = 
+                contexto.Pedido
+                .Where(ped => ped.ComandaId == comandaId)
+                .Select(p =>  new PedidoModel()
                 {
-                    PedidoId = x.PedidoId,
-                    ProdutoId = x.ProdutoId,
-                    ComandaId = x.ComandaId,
-                    QtdeProduto = x.QtdeProduto,
-                    ValorPedido = x.ValorPedido,
-                    AndamentoPedido = x.AndamentoPedido
-                };
-                pedidos.Add(pedido);
-            });
+                    PedidoId = p.PedidoId,
+                    ProdutoId = p.ProdutoId,
+                    ComandaId = p.ComandaId,
+                    QtdeProduto = p.QtdeProduto,
+                    ValorPedido = p.ValorPedido,
+                    StatusPedido = p.StatusPedido
+                }).ToList();
 
             return pedidos;
         }
         //ADICIONA PEDIDOS EM MODEL AUXILIAR
         public static void AdicionarPedido(AdicionarPedidoModel model)
         {
-            Dados.Dados.listaPedidos.Add(new Pedido()
+            var contexto = new RestauranteContexto();
+            var pedido = (new Pedido()
             {
-                PedidoId = Dados.Dados.listaPedidos.Count + 1,
+                PedidoId = contexto.Pedido.Count() + 1,
                 ComandaId = model.ComandaId,
                 ProdutoId = model.ProdutoId,
                 QtdeProduto = model.QtdeProduto,
                 ValorPedido = model.ValorPedido,
-                AndamentoPedido = model.AndamentoPedido
-            }); ;
+                StatusPedido = model.StatusPedido
+            });
+            contexto.Add(pedido);
+            contexto.SaveChanges();
         }
 
         //REMOVE UM PRODUTO
         public static void RemoverPedido(int pedidoId)
         {
-            Dados.Dados.listaPedidos.ForEach(x =>
-            {
-                if (x.PedidoId == pedidoId)
-                {
-                    x.AndamentoPedido = 2;
-                }
-            });
+            var contexto = new RestauranteContexto();
+            var pedido = contexto.Pedido
+                .Where(ped => ped.PedidoId == pedidoId)
+                .FirstOrDefault();
+
+            pedido.StatusPedido = 2;
+            contexto.SaveChanges();
         }
 
         //ATUALIZA UM PRODUTO
         public static void AtualizarPedido(int pedidoId, int quantidadeItem)
         {
-            Dados.Dados.listaPedidos.ForEach(p =>
+            var contexto = new RestauranteContexto();
+            if(contexto.Pedido.Count() == pedidoId)
             {
-                if (p.PedidoId == pedidoId)
-                {
-                    p.QtdeProduto = quantidadeItem;
-                    p.ValorPedido = ValorPedido(p.ProdutoId, quantidadeItem);
-                }
-            });
+                var pedido = contexto.Pedido
+                            .Where(ped => ped.PedidoId == pedidoId)
+                            .FirstOrDefault();
+
+                pedido.QtdeProduto = quantidadeItem;
+                pedido.ValorPedido = ValorPedido(pedido.ProdutoId, quantidadeItem);
+                contexto.SaveChanges();
+            }
+            
         }
 
         //CALCULA O VALOR TOTAL DO PEDIDO
-        public static float ValorPedido(int prodId, int quantidade)
+        public static double ValorPedido(int prodId, int quantidade)
         {
-            return Dados.Dados.listaProdutos
+            var contexto = new RestauranteContexto();
+            return contexto.Produto
                     .Where(p => p.ProdutoId == prodId)
                     .Sum(p => p.ValorProduto * quantidade);
         }
@@ -80,14 +87,11 @@ namespace RestaurantApp.Service
         //VERFICA SE O PEDIDO ESCOLHIDO PODE SER CANCELADO OU EDITADO
         public static bool PedidoCorreto(int pedidoId)
         {
+            var contexto = new RestauranteContexto();
             bool pedidoCorreto = false;
-            if(pedidoId == Dados.Dados.listaPedidos.Count)
+            if (pedidoId == contexto.Pedido.Count())
             {
                 pedidoCorreto = true;
-            }
-            else
-            {
-                pedidoCorreto = false;
             }
 
             return pedidoCorreto;

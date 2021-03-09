@@ -1,16 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RestaurantApp.Entities
 {
     public class Pedido
     {
-        public int PedidoId { get; set; } //PK
-        public int ComandaId { get; set; } //FK
-        public int ProdutoId { get; set; } //FK
+        [Key]
+        public int PedidoId { get; set; } 
+
+        public int ComandaId { get; set; } 
+        [ForeignKey("ComandaId")]
+        public Comanda Comanda { get; set; }
+
+        public int ProdutoId { get; set; } 
+        [ForeignKey("ProdutoId")]
+        public Produto Produto { get; set; }
+
         public int QtdeProduto { get; set; }
-        public float ValorPedido { get; set; }
-        public int AndamentoPedido { get; set; }
+        public double ValorPedido { get; set; }
+
+        public int StatusPedido { get; set; } 
+        [ForeignKey("StatusPedido")]
+        public StatusPedido Status { get; set; }
+
+
     }
 }

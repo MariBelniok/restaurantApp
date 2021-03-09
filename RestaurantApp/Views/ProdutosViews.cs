@@ -3,7 +3,7 @@ using System;
 
 namespace RestaurantApp.Views
 {
-    class ProdutosViews
+    class ProdutoViews
     {
         //MOSTRAR MENU
         public static void MostrarMenu()
@@ -11,7 +11,7 @@ namespace RestaurantApp.Views
             Console.WriteLine();
             Console.WriteLine("------------------------------------------");
             Console.WriteLine("MENU: ");
-            var produtos = ProdutoService.ListarProdutos();
+            var produtos = ProdutoService.BuscarProdutoDisponivel();
 
             foreach (ProdutoModel p in produtos)
             {

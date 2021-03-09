@@ -1,10 +1,14 @@
-﻿namespace RestaurantApp.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+
+namespace RestaurantApp.Entities
 {
     public class Produto
     {
-        public int ProdutoId { get; set; } //PK
+        [Key]
+        public int ProdutoId { get; set; }
         public string NomeProduto { get; set; }
-        public float ValorProduto { get; set; }
-        public bool ProdutoDisponivel { get; set; }
+        public double ValorProduto { get; set; }
+        public bool Disponivel { get; set; }
     }
 }

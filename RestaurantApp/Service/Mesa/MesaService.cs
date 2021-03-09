@@ -5,64 +5,49 @@ using RestaurantApp.Dados;
 
 namespace RestaurantApp.Service
 {
-    class MesaService
+    public class MesaService
     {
         //MUDA STATUS DA MESA QUANDO ABRE OU FECHA COMANDA
         public static void AtualizarStatusMesa(int mesaId)
         {
-            Dados.Dados.listaMesas.ForEach(m =>
+            var contexto = new RestauranteContexto();
+            var mesa = contexto.Mesa
+                        .Where(m => m.MesaId == mesaId)
+                        .FirstOrDefault();
+            if (mesa.MesaOcupada)
             {
-                if(mesaId == m.MesaId && m.MesaDisponivel == true)
-                {
-                     m.MesaDisponivel = false;
-                }else if(mesaId == m.MesaId && m.MesaDisponivel == false)
-                {
-                    m.MesaDisponivel = true;
-                }
-            });
-            File.WriteAllText(Dados.Dados.caminhoMesas, string.Empty);
-            Dados.Dados.SalvarMesa();
+                mesa.MesaOcupada = false;
+            }
+            else
+            {
+                mesa.MesaOcupada = true;
+            }
+            contexto.SaveChanges();
         }
 
         //VERIFICA SE A MESA ESTA DESOCUPADA
         public static bool MesaDesocupada(int mesaId)
         {
-            bool mesaDesocupada = false;
-            if(Dados.Dados.listaMesas.Any(x => x.MesaDisponivel == true && mesaId == x.MesaId))
+            var contexto = new RestauranteContexto();
+            bool mesaOcupada = true;
+            if(contexto.Mesa.Any(x => x.MesaOcupada == false && mesaId == x.MesaId))
             {
-                mesaDesocupada = true;
+                mesaOcupada = false;
             }
-            return mesaDesocupada;
+            return mesaOcupada;
         }
         
         //VERIFICA QUAIS MESAS ESTAO DISPONIVEIS
-        public static List<MesaModel> BuscarMesaDisponivel()
+        public static List<MesaModel> BuscarMesasDisponiveis()
         {
-            return Dados.Dados.listaMesas
-                .Where(p => p.MesaDisponivel)
+            var contexto = new RestauranteContexto();
+            return contexto.Mesa
+                .Where(p => p.MesaOcupada != true)
                 .Select(a => new MesaModel()
                 {
                     MesaId = a.MesaId
                 })
                 .ToList();
-        }
-
-        //LISTA MESAS DISPONIVEIS
-        public static List<MesaModel> ListarMesasDisponiveis()
-        {
-            var listaMesasDisponiveis = new List<MesaModel>();
-
-            BuscarMesaDisponivel().ForEach(x =>
-            {
-                var mesa = new MesaModel()
-                {
-                    MesaId = x.MesaId
-                };
-
-                listaMesasDisponiveis.Add(mesa);
-            });
-
-            return listaMesasDisponiveis;
         }
     }
 }

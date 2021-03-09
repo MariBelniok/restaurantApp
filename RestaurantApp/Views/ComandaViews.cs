@@ -1,4 +1,5 @@
-﻿using RestaurantApp.Service;
+﻿using RestaurantApp.Dados;
+using RestaurantApp.Service;
 using System;
 
 
@@ -14,16 +15,18 @@ namespace RestaurantApp.Views
         }
 
         //ID DA COMANDA AO INICIAR ATENDIMENTO
-        public static int comandaId = Dados.Dados.listaComandas.Count + 1;
+        public static int comandaId;
 
 
         //PEDIR DADOS DA COMANDA
         public static void IniciarComanda()
         {
-            Console.Write($"Numero da comanda: {comandaId}");
+            Console.Write($"Numero da comanda: ");
+            int comanda = int.Parse(Console.ReadLine());
+            comandaId = comanda;
             Console.WriteLine();
             Console.WriteLine("Mesas disponiveis: ");
-            var mesas = MesaService.ListarMesasDisponiveis();
+            var mesas = MesaService.BuscarMesasDisponiveis();
             foreach (MesaModel mesa in mesas)
             {
                 Console.Write($"[ {mesa.MesaId} ] ");
@@ -32,16 +35,16 @@ namespace RestaurantApp.Views
             Console.Write("Numero da mesa: ");
             int numeroMesa = int.Parse(Console.ReadLine());
 
-            bool mesaDesocupada = MesaService.MesaDesocupada(numeroMesa);
+            bool mesaOcupada = MesaService.MesaDesocupada(numeroMesa);
 
-            MesaService.AtualizarStatusMesa(numeroMesa);
+            
 
-            while(mesaDesocupada == false)
+            while(mesaOcupada == true)
             {
                 Console.WriteLine("Mesa inexistente ou ocupada! ");
                 Console.Write("Numero da mesa: ");
                 numeroMesa = int.Parse(Console.ReadLine());
-                mesaDesocupada = MesaService.MesaDesocupada(numeroMesa);
+                mesaOcupada = MesaService.MesaDesocupada(numeroMesa);
             }
 
             Console.WriteLine("Quantidade de pessoas: ");
@@ -70,6 +73,15 @@ namespace RestaurantApp.Views
                 QtdePessoasMesa = qtePessoas
             };
             ComandaService.AdicionarComanda(model);
+            var modelPedido = new AdicionarPedidoModel()
+            {
+                StatusPedido = 1,
+                ComandaId = comandaId,
+                ProdutoId = 1,
+                QtdeProduto = qtePessoas,
+                ValorPedido = PedidoService.ValorPedido(1, qtePessoas)
+            };
+            PedidoService.AdicionarPedido(modelPedido);
 
             ContinuarComanda();
         }
@@ -116,7 +128,7 @@ namespace RestaurantApp.Views
             if (continuarComanda == 's')
             {
                 Console.Clear();
-                ProdutosViews.MostrarMenu();
+                ProdutoViews.MostrarMenu();
                 PedidoViews.RealizarPedido();
                 PedidoViews.MostrarPedido(comandaId);
             }
@@ -151,7 +163,7 @@ namespace RestaurantApp.Views
                     continuarComanda = char.Parse(Console.ReadLine());
 
                     Console.Clear();
-                    ProdutosViews.MostrarMenu();
+                    ProdutoViews.MostrarMenu();
                     PedidoViews.RealizarPedido();
                     PedidoViews.MostrarPedido(comandaId);
                 }
@@ -161,7 +173,10 @@ namespace RestaurantApp.Views
         //TODAS INFORMAÇOES DA COMANDA SOLICITADA
         public static void VisualizarComanda(int comandaId)
         {
+            var contexto = new RestauranteContexto();
             var listarComanda = ComandaService.BuscarComanda(comandaId);
+            var listaPedidos = PedidoService.BuscarPedidos(comandaId);
+            var listaProdutos = ProdutoService.BuscarProdutoDisponivel();
             double valorTotalComanda = ComandaService.ValorTotalComanda(comandaId);
 
             listarComanda.ForEach(x =>
@@ -188,39 +203,26 @@ namespace RestaurantApp.Views
                     Console.WriteLine();
                     Console.WriteLine("-------------------------------------");
                     Console.WriteLine("PEDIDOS REALIZADOS: ");
-                    Console.WriteLine($"ITEM: Rodizio");
-                    Console.WriteLine($"VALOR ITEM: 70,00");
-                    Console.WriteLine($"QUANTIDADE: {x.QtdePessoasMesa}");
-                    Console.WriteLine($"VALOR TOTAL PEDIDO: R${70 * x.QtdePessoasMesa:F2}");
                     Console.WriteLine();
                     //Adiciona rodizio como pedido na comanda
-                    var model = new AdicionarPedidoModel()
-                    {
-                        AndamentoPedido = 1,
-                        ComandaId = ComandaViews.comandaId,
-                        ProdutoId = 1,
-                        QtdeProduto = x.QtdePessoasMesa,
-                        ValorPedido = PedidoService.ValorPedido(1, x.QtdePessoasMesa)
-                    };
-                    PedidoService.AdicionarPedido(model);
-                    Dados.Dados.listaPedidos.ForEach(p =>
+                    listaPedidos.ForEach(p =>
                     {
                         if (p.ComandaId == comandaId)
                         {
-                            Dados.Dados.listaProdutos.ForEach(z =>
+                            listaProdutos.ForEach(z =>
                             {
-                                if(z.ProdutoId == p.ProdutoId)
+                                if (z.ProdutoId == p.ProdutoId)
                                 {
                                     Console.WriteLine();
                                     Console.WriteLine($"ITEM: {z.NomeProduto}");
                                     Console.WriteLine($"VALOR ITEM: R${z.ValorProduto:F2}");
                                     Console.WriteLine($"QUANTIDADE: {p.QtdeProduto}");
                                     Console.WriteLine($"VALOR TOTAL PEDIDO: R${p.ValorPedido:F2}");
-                                    if(p.AndamentoPedido == 1)
+                                    if (p.StatusPedido == 1)
                                     {
                                         Console.WriteLine($"STATUS PEDIDO: ENTREGUE");
                                     }
-                                    if(p.AndamentoPedido == 2)
+                                    if (p.StatusPedido == 2)
                                     {
                                         Console.WriteLine($"STATUS PEDIDO: CANCELADO");
                                     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RestaurantApp.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,5 +14,6 @@ namespace RestaurantApp.Service
         public double Valor { get; set; }
         public bool ComandaPaga { get; set; }
         public int QtdePessoasMesa { get; set; }
+        public ICollection<Pedido> Pedidos { get; set; }
     }
 }

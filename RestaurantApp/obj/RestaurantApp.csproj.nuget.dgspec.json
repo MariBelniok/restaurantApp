@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Dell\\Desktop\\restaurantApp\\RestaurantApp\\RestaurantApp.csproj": {}
+    "C:\\Users\\marianna.belniok\\Desktop\\restaurantApp\\RestaurantApp\\RestaurantApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Dell\\Desktop\\restaurantApp\\RestaurantApp\\RestaurantApp.csproj": {
+    "C:\\Users\\marianna.belniok\\Desktop\\restaurantApp\\RestaurantApp\\RestaurantApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Dell\\Desktop\\restaurantApp\\RestaurantApp\\RestaurantApp.csproj",
+        "projectUniqueName": "C:\\Users\\marianna.belniok\\Desktop\\restaurantApp\\RestaurantApp\\RestaurantApp.csproj",
         "projectName": "RestaurantApp",
-        "projectPath": "C:\\Users\\Dell\\Desktop\\restaurantApp\\RestaurantApp\\RestaurantApp.csproj",
-        "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Dell\\Desktop\\restaurantApp\\RestaurantApp\\obj\\",
+        "projectPath": "C:\\Users\\marianna.belniok\\Desktop\\restaurantApp\\RestaurantApp\\RestaurantApp.csproj",
+        "packagesPath": "C:\\Users\\marianna.belniok\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\marianna.belniok\\Desktop\\restaurantApp\\RestaurantApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\marianna.belniok\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -39,6 +39,28 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
