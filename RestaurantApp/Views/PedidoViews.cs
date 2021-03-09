@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using System.Linq;
 using RestaurantApp.Dados;
 using RestaurantApp.Service;
 
@@ -83,43 +83,54 @@ namespace RestaurantApp.Views
         //CANCELA UM PEDIDO
         public static void CancelarPedido()
         {
-            Console.WriteLine("Favor informar o número do pedido que deseja cancelar: ");
-            int pedidoId = int.Parse(Console.ReadLine());
-            bool pedidoCorreto = PedidoService.PedidoCorreto(pedidoId);
+            var contexto = new RestauranteContexto();
+            int pedidoId = contexto.Pedido.Count();
+            Console.WriteLine($"Pedido que deseja cancelar: {pedidoId}");
 
-            while (pedidoCorreto != true)
+            Console.WriteLine($"Realmente deseja cancelar o pedido {pedidoId}? (s/n)");
+            char resp = char.Parse(Console.ReadLine());
+
+            bool respostaCorreta = VerificarResposta.VerificaResposta(resp);
+            while (respostaCorreta != true)
             {
-                Console.WriteLine("Somente possivel alterar o ultimo pedido realizado!");
+                Console.WriteLine("Escolha 's' ou 'n', outra resposta não é valida!");
                 Console.WriteLine();
-                Console.WriteLine("Favor informar o número do pedido que deseja editar: ");
-                pedidoId = int.Parse(Console.ReadLine());
-                pedidoCorreto = PedidoService.PedidoCorreto(pedidoId);
+                Console.WriteLine("Deseja editar ou cancelar seu pedido? (s/n)");
+                resp = char.Parse(Console.ReadLine());
+
+                respostaCorreta = VerificarResposta.VerificaResposta(resp);
             }
 
-            PedidoService.RemoverPedido(pedidoId);
+            if(resp == 's')
+            {
+                PedidoService.RemoverPedido(pedidoId);
 
-            Console.Clear();
-            Console.WriteLine("Pedido cancelado com sucesso!");
-            Console.WriteLine();
-            ProdutoViews.MostrarMenu();
-            RealizarPedido();
+                Console.Clear();
+                Console.WriteLine("Pedido cancelado com sucesso!");
+                MostrarPedido(ComandaViews.comandaId);
+                Console.WriteLine();
+            }
+            else
+            {
+                MostrarPedido(ComandaViews.comandaId);
+            }
+
+            
         }
 
         //EDITA UM PEDIDO
         public static void EditarPedido()
         {
+            var contexto = new RestauranteContexto();
+            int pedidoId = contexto.Pedido.Count();
+            Console.WriteLine($"Pedido que deseja editar: {pedidoId}");
 
-            Console.WriteLine("Favor informar o número do pedido que deseja editar: ");
-            int pedidoId = int.Parse(Console.ReadLine());
-            bool pedidoCorreto = PedidoService.PedidoCorreto(pedidoId);
-
-            while (pedidoCorreto != true)
+            while (contexto.Pedido.Count() != pedidoId)
             {
                 Console.WriteLine("Somente possivel alterar o ultimo pedido realizado!");
                 Console.WriteLine();
                 Console.WriteLine("Favor informar o número do pedido que deseja editar: ");
                 pedidoId = int.Parse(Console.ReadLine());
-                pedidoCorreto = PedidoService.PedidoCorreto(pedidoId);
             }
 
             Console.WriteLine("Quantos desse produto você deseja? ");
@@ -139,6 +150,7 @@ namespace RestaurantApp.Views
             var contexto = new RestauranteContexto();
             var listaPedidos = PedidoService.BuscarPedidos(comandaId);
             var listaProdutos = ProdutoService.BuscarProdutoDisponivel();
+            var statusPedido = contexto.StatusPedido;
             listaPedidos.ForEach(p =>
             {
                 if (p.ComandaId == comandaId)
@@ -154,15 +166,15 @@ namespace RestaurantApp.Views
                             Console.WriteLine($"Valor Item: {x.ValorProduto} ");
                             Console.WriteLine($"Quantidade:{p.QtdeProduto}");
                             Console.WriteLine($"Valor Pedido: R${p.ValorPedido:F2}");
-                            if (p.StatusPedido == 1)
+                            foreach (var sp in statusPedido)
                             {
-                                Console.WriteLine("Pedido Realizado!");
-                            }
-                            if (p.StatusPedido == 2)
-                            {
-                                Console.WriteLine("Pedido Cancelado!");
+                                if (p.StatusPedido == sp.StatusId)
+                                    Console.WriteLine($"STATUS PEDIDO: {sp.Descricao.ToUpper()}");
                             }
                             Console.WriteLine("------------------------------------------");
+
+                            
+                            Console.WriteLine($"VALOR TOTAL DA COMANDA: {ComandaService.ValorTotalComanda(comandaId):F2}");
                         }
                     });
                 }
@@ -265,6 +277,10 @@ namespace RestaurantApp.Views
 
                     ComandaService.EncerrarComanda(ComandaViews.comandaId);
                     ComandaViews.VisualizarComanda(ComandaViews.comandaId);
+
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine();
 
                     throw new Exception("COMANDA FINALIZADA E PAGA");
                 }

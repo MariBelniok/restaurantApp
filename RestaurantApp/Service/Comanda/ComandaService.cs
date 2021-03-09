@@ -25,12 +25,42 @@ namespace RestaurantApp.Service
             contexto.Add(comanda);
             contexto.SaveChanges();
         }
+
+        //ENCERRA E PAGA COMANDA
+        public static void EncerrarComanda(int comandaId)
+        {
+            var contexto = new RestauranteContexto();
+            var comanda = contexto.Comanda
+                        .Where(c => c.ComandaId == comandaId)
+                        .FirstOrDefault();
+            comanda.DataHoraSaida = DateTime.Now;
+            comanda.Valor = ValorTotalComanda(comandaId);
+            comanda.ComandaPaga = true;
+            contexto.SaveChanges();
+            MesaService.AtualizarStatusMesa(comanda.MesaId);
+        }
+
+        //CANCELA COMANDA
+        public static void CancelarComanda(int comandaId)
+        {
+            var contexto = new RestauranteContexto();
+            var comanda = contexto.Comanda
+                        .Where(c => c.ComandaId == comandaId)
+                        .FirstOrDefault();
+            comanda.DataHoraSaida = DateTime.Now;
+            comanda.Valor = ValorTotalComanda(comandaId) * 0;
+            comanda.ComandaPaga = true;
+            contexto.SaveChanges();
+            MesaService.AtualizarStatusMesa(comanda.MesaId);
+        }
+
         //BUSCA A COMANDAS ADICIONADAS NA MODEL
         public static List<ComandaModel> BuscarComanda(int comandaId)
         {
             var contexto = new RestauranteContexto();
             var comanda = contexto.Comanda
                         .Where(c => c.ComandaId == comandaId)
+                        .Include(c => c.Pedidos)
                         .Select(comanda => new ComandaModel
                         {
                             ComandaId = comanda.ComandaId,
@@ -41,7 +71,7 @@ namespace RestaurantApp.Service
                             ComandaPaga = comanda.ComandaPaga,
                             QtdePessoasMesa = comanda.QtdePessoasMesa
                         });
-            comanda.Include(c => c.Pedidos);
+
             return comanda.ToList();
         }
 
@@ -56,35 +86,6 @@ namespace RestaurantApp.Service
                 .Sum();
 
             return valorTotalComanda;
-        }
-
-        //CANCELA COMANDA
-        public static void CancelarComanda(int comandaId)
-        {
-            var contexto = new RestauranteContexto();
-            var comanda = contexto.Comanda
-                        .Where(c => c.ComandaId == comandaId)
-                        .FirstOrDefault();
-            comanda.DataHoraSaida = DateTime.Now;
-            comanda.Valor = ValorTotalComanda(comandaId) * 0;
-            comanda.ComandaPaga = true;
-            MesaService.AtualizarStatusMesa(comanda.MesaId);
-            contexto.SaveChanges();
-
-        }
-
-        //ENCERRA E PAGA COMANDA
-        public static void EncerrarComanda(int comandaId)
-        {
-            var contexto = new RestauranteContexto();
-            var comanda = contexto.Comanda
-                        .Where(c => c.ComandaId == comandaId)
-                        .FirstOrDefault();
-            comanda.DataHoraSaida = DateTime.Now;
-            comanda.Valor = ValorTotalComanda(comandaId);
-            comanda.ComandaPaga = true;
-            MesaService.AtualizarStatusMesa(comanda.MesaId);
-            contexto.SaveChanges();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.IO;
 using RestaurantApp.Dados;
 
 namespace RestaurantApp.Service
@@ -25,19 +24,7 @@ namespace RestaurantApp.Service
             contexto.SaveChanges();
         }
 
-        //VERIFICA SE A MESA ESTA DESOCUPADA
-        public static bool MesaDesocupada(int mesaId)
-        {
-            var contexto = new RestauranteContexto();
-            bool mesaOcupada = true;
-            if(contexto.Mesa.Any(x => x.MesaOcupada == false && mesaId == x.MesaId))
-            {
-                mesaOcupada = false;
-            }
-            return mesaOcupada;
-        }
-        
-        //VERIFICA QUAIS MESAS ESTAO DISPONIVEIS
+        //LISTA AS MESAS DISPONIVEIS
         public static List<MesaModel> BuscarMesasDisponiveis()
         {
             var contexto = new RestauranteContexto();
@@ -48,6 +35,18 @@ namespace RestaurantApp.Service
                     MesaId = a.MesaId
                 })
                 .ToList();
+        }
+
+        //VERIFICA SE A MESA ESTA DESOCUPADA
+        public static bool MesaDesocupada(int mesaId)
+        {
+            var contexto = new RestauranteContexto();
+            bool mesaOcupada = true;
+            if(contexto.Mesa.Any(x => x.MesaOcupada == false && mesaId == x.MesaId))
+            {
+                mesaOcupada = false;
+            }
+            return mesaOcupada;
         }
     }
 }

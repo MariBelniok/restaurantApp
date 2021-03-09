@@ -10,8 +10,8 @@ namespace RestaurantApp.Views
         {
             Console.WriteLine();
             Console.WriteLine("------------------------------------------");
-            Console.WriteLine("MENU: ");
-            var produtos = ProdutoService.BuscarProdutoDisponivel();
+            Console.WriteLine("                   MENU:                  ");
+            var produtos = ProdutoService.ListarMenu();
 
             foreach (ProdutoModel p in produtos)
             {

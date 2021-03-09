@@ -1,7 +1,7 @@
 ﻿using RestaurantApp.Dados;
 using RestaurantApp.Service;
 using System;
-
+using System.Linq;
 
 namespace RestaurantApp.Views
 {
@@ -21,9 +21,9 @@ namespace RestaurantApp.Views
         //PEDIR DADOS DA COMANDA
         public static void IniciarComanda()
         {
-            Console.Write($"Numero da comanda: ");
-            int comanda = int.Parse(Console.ReadLine());
-            comandaId = comanda;
+            var contexto = new RestauranteContexto();
+            comandaId = contexto.Comanda.Count() + 1;
+            Console.Write($"Numero da comanda: {comandaId} ");
             Console.WriteLine();
             Console.WriteLine("Mesas disponiveis: ");
             var mesas = MesaService.BuscarMesasDisponiveis();
@@ -174,12 +174,14 @@ namespace RestaurantApp.Views
         public static void VisualizarComanda(int comandaId)
         {
             var contexto = new RestauranteContexto();
-            var listarComanda = ComandaService.BuscarComanda(comandaId);
-            var listaPedidos = PedidoService.BuscarPedidos(comandaId);
-            var listaProdutos = ProdutoService.BuscarProdutoDisponivel();
+            var dadosComanda = ComandaService.BuscarComanda(comandaId);
+            var dadosPedidos = PedidoService.BuscarPedidos(comandaId);
+            var dadosProdutos = ProdutoService.BuscarProdutoDisponivel();
+            var statusPedido = contexto.StatusPedido.ToList();
             double valorTotalComanda = ComandaService.ValorTotalComanda(comandaId);
 
-            listarComanda.ForEach(x =>
+
+            dadosComanda.ForEach(x =>
             {
                 if (x.ComandaId == comandaId)
                 {
@@ -192,7 +194,7 @@ namespace RestaurantApp.Views
                     {
                         Console.Write("STATUS DA COMANDA: PAGA");
                     }
-                    else if(valorTotalComanda == 0 && x.ComandaPaga)
+                    else if (valorTotalComanda == 0 && x.ComandaPaga)
                     {
                         Console.Write("STATUS DA COMANDA: CANCELADA");
                     }
@@ -204,12 +206,11 @@ namespace RestaurantApp.Views
                     Console.WriteLine("-------------------------------------");
                     Console.WriteLine("PEDIDOS REALIZADOS: ");
                     Console.WriteLine();
-                    //Adiciona rodizio como pedido na comanda
-                    listaPedidos.ForEach(p =>
+                    dadosPedidos.ForEach(p =>
                     {
                         if (p.ComandaId == comandaId)
                         {
-                            listaProdutos.ForEach(z =>
+                            dadosProdutos.ForEach(z =>
                             {
                                 if (z.ProdutoId == p.ProdutoId)
                                 {
@@ -218,14 +219,12 @@ namespace RestaurantApp.Views
                                     Console.WriteLine($"VALOR ITEM: R${z.ValorProduto:F2}");
                                     Console.WriteLine($"QUANTIDADE: {p.QtdeProduto}");
                                     Console.WriteLine($"VALOR TOTAL PEDIDO: R${p.ValorPedido:F2}");
-                                    if (p.StatusPedido == 1)
-                                    {
-                                        Console.WriteLine($"STATUS PEDIDO: ENTREGUE");
+                                    
+                                    foreach (var sp in statusPedido) {
+                                        if(p.StatusPedido == sp.StatusId)
+                                        Console.WriteLine($"STATUS PEDIDO: {sp.Descricao.ToUpper()}");
                                     }
-                                    if (p.StatusPedido == 2)
-                                    {
-                                        Console.WriteLine($"STATUS PEDIDO: CANCELADO");
-                                    }
+                                    
                                     Console.WriteLine();
                                 }
                             });
